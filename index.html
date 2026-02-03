@@ -2404,16 +2404,101 @@
 
     <script>
         // Data Storage
-        let contacts = JSON.parse(localStorage.getItem('bbc_contacts') || '[]');
-        let companies = JSON.parse(localStorage.getItem('bbc_companies') || '[]');
-        let deals = JSON.parse(localStorage.getItem('bbc_deals') || '[]');
-        let tasks = JSON.parse(localStorage.getItem('bbc_tasks') || '[]');
-        let employees = JSON.parse(localStorage.getItem('bbc_employees') || '[]');
-        let customServices = JSON.parse(localStorage.getItem('bbc_custom_services') || '[]');
-        let availableTags = JSON.parse(localStorage.getItem('bbc_available_tags') || '[]');
-        let orders = JSON.parse(localStorage.getItem('bbc_orders') || '[]');
-        let reminders = JSON.parse(localStorage.getItem('bbc_reminders') || '[]');
-        let emailTemplates = JSON.parse(localStorage.getItem('bbc_email_templates') || '[]');
+        // ==========================================
+        // STORAGE SYSTEM (funktioniert auch auf GitHub Pages)
+        // ==========================================
+        
+        const Storage = {
+            // Test ob localStorage verfügbar ist
+            isAvailable: function() {
+                try {
+                    const test = '__storage_test__';
+                    Storage.setItem(test, test);
+                    Storage.removeItem(test);
+                    return true;
+                } catch(e) {
+                    return false;
+                }
+            },
+            
+            // Speichern mit Fallback
+            setItem: function(key, value) {
+                try {
+                    if (this.isAvailable()) {
+                        Storage.setItem(key, value);
+                        return true;
+                    } else {
+                        // Fallback: Daten im Memory speichern
+                        if (!window._fallbackStorage) window._fallbackStorage = {};
+                        window._fallbackStorage[key] = value;
+                        console.warn('localStorage nicht verfügbar - verwende Fallback');
+                        return true;
+                    }
+                } catch(e) {
+                    console.error('Speichern fehlgeschlagen:', e);
+                    // Notfall-Fallback
+                    if (!window._fallbackStorage) window._fallbackStorage = {};
+                    window._fallbackStorage[key] = value;
+                    return false;
+                }
+            },
+            
+            // Laden mit Fallback
+            getItem: function(key) {
+                try {
+                    if (this.isAvailable()) {
+                        return Storage.getItem(key);
+                    } else {
+                        // Fallback: Aus Memory laden
+                        if (window._fallbackStorage && window._fallbackStorage[key]) {
+                            return window._fallbackStorage[key];
+                        }
+                        return null;
+                    }
+                } catch(e) {
+                    console.error('Laden fehlgeschlagen:', e);
+                    // Notfall-Fallback
+                    if (window._fallbackStorage && window._fallbackStorage[key]) {
+                        return window._fallbackStorage[key];
+                    }
+                    return null;
+                }
+            },
+            
+            // Löschen mit Fallback
+            removeItem: function(key) {
+                try {
+                    if (this.isAvailable()) {
+                        Storage.removeItem(key);
+                    }
+                    if (window._fallbackStorage) {
+                        delete window._fallbackStorage[key];
+                    }
+                } catch(e) {
+                    console.error('Löschen fehlgeschlagen:', e);
+                }
+            }
+        };
+        
+        // Warnung anzeigen wenn localStorage nicht verfügbar
+        if (!Storage.isAvailable()) {
+            console.warn('⚠️ localStorage ist nicht verfügbar!');
+            console.warn('📝 Verwende Fallback-Speicher (Session)');
+            console.warn('💡 WICHTIG: Daten gehen beim Schließen verloren!');
+            console.warn('🔧 Lösung: Verwenden Sie eine eigene Domain oder Netlify');
+        }
+        
+        // Daten laden (mit Storage-System)
+        let contacts = JSON.parse(Storage.getItem('bbc_contacts') || '[]');
+        let companies = JSON.parse(Storage.getItem('bbc_companies') || '[]');
+        let deals = JSON.parse(Storage.getItem('bbc_deals') || '[]');
+        let tasks = JSON.parse(Storage.getItem('bbc_tasks') || '[]');
+        let employees = JSON.parse(Storage.getItem('bbc_employees') || '[]');
+        let customServices = JSON.parse(Storage.getItem('bbc_custom_services') || '[]');
+        let availableTags = JSON.parse(Storage.getItem('bbc_available_tags') || '[]');
+        let orders = JSON.parse(Storage.getItem('bbc_orders') || '[]');
+        let reminders = JSON.parse(Storage.getItem('bbc_reminders') || '[]');
+        let emailTemplates = JSON.parse(Storage.getItem('bbc_email_templates') || '[]');
         
         // Initialize default email templates if empty
         if (emailTemplates.length === 0) {
@@ -2502,7 +2587,7 @@ Mit freundlichen Grüßen
 Ihr BBC Team`
                 }
             ];
-            localStorage.setItem('bbc_email_templates', JSON.stringify(emailTemplates));
+            Storage.setItem('bbc_email_templates', JSON.stringify(emailTemplates));
         }
         
         // Initialize employees with default structure if empty
@@ -2514,7 +2599,7 @@ Ihr BBC Team`
                 { id: '4', name: 'Mitarbeiter 4', position: '', email: '', phone: '', notes: '' },
                 { id: '5', name: 'Mitarbeiter 5', position: '', email: '', phone: '', notes: '' }
             ];
-            localStorage.setItem('bbc_employees', JSON.stringify(employees));
+            Storage.setItem('bbc_employees', JSON.stringify(employees));
         }
         
         // Request notification permission on load
@@ -2698,21 +2783,21 @@ Ihr BBC Team`
                     if (contact) {
                         if (!contact.protocol) contact.protocol = [];
                         contact.protocol.unshift(protocolEntry);
-                        localStorage.setItem('bbc_contacts', JSON.stringify(contacts));
+                        Storage.setItem('bbc_contacts', JSON.stringify(contacts));
                     }
                 } else if (entityType === 'company') {
                     const company = companies.find(c => c.id === entityId);
                     if (company) {
                         if (!company.protocol) company.protocol = [];
                         company.protocol.unshift(protocolEntry);
-                        localStorage.setItem('bbc_companies', JSON.stringify(companies));
+                        Storage.setItem('bbc_companies', JSON.stringify(companies));
                     }
                 } else if (entityType === 'deal') {
                     const deal = deals.find(d => d.id === entityId);
                     if (deal) {
                         if (!deal.protocol) deal.protocol = [];
                         deal.protocol.unshift(protocolEntry);
-                        localStorage.setItem('bbc_deals', JSON.stringify(deals));
+                        Storage.setItem('bbc_deals', JSON.stringify(deals));
                     }
                 }
             }
@@ -2864,7 +2949,7 @@ Ihr BBC Team`
             };
             
             reminders.push(reminder);
-            localStorage.setItem('bbc_reminders', JSON.stringify(reminders));
+            Storage.setItem('bbc_reminders', JSON.stringify(reminders));
             
             closeReminderModal();
             showNotification('✅ Wiedervorlage erstellt', `Erinnerung für ${reminderDate.toLocaleDateString('de-DE')} um ${reminderDate.toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit'})} Uhr`);
@@ -2911,7 +2996,7 @@ Ihr BBC Team`
                             reminderSent: false
                         };
                         tasks.push(task);
-                        localStorage.setItem('bbc_tasks', JSON.stringify(tasks));
+                        Storage.setItem('bbc_tasks', JSON.stringify(tasks));
                     }
                     
                     // Show browser notification if requested
@@ -2929,7 +3014,7 @@ Ihr BBC Team`
             });
             
             if (triggeredCount > 0) {
-                localStorage.setItem('bbc_reminders', JSON.stringify(reminders));
+                Storage.setItem('bbc_reminders', JSON.stringify(reminders));
                 renderTasks();
                 updateDashboard();
             }
@@ -2939,7 +3024,7 @@ Ihr BBC Team`
             const index = reminders.findIndex(r => r.id === reminderId);
             if (index > -1) {
                 reminders.splice(index, 1);
-                localStorage.setItem('bbc_reminders', JSON.stringify(reminders));
+                Storage.setItem('bbc_reminders', JSON.stringify(reminders));
                 showNotification('Wiedervorlage gelöscht', 'Die Erinnerung wurde entfernt.');
             }
         }
@@ -3028,7 +3113,7 @@ Ihr BBC Team`
                 }
                 
                 deal.protocol.unshift(entry);
-                localStorage.setItem('bbc_deals', JSON.stringify(deals));
+                Storage.setItem('bbc_deals', JSON.stringify(deals));
                 
                 closeProtocolModal();
                 showDealDetail(entityId);
@@ -3041,7 +3126,7 @@ Ihr BBC Team`
                 }
                 
                 company.protocol.unshift(entry);
-                localStorage.setItem('bbc_companies', JSON.stringify(companies));
+                Storage.setItem('bbc_companies', JSON.stringify(companies));
                 
                 closeProtocolModal();
                 showCompanyDetail(entityId);
@@ -3054,7 +3139,7 @@ Ihr BBC Team`
                 }
                 
                 contact.protocol.unshift(entry);
-                localStorage.setItem('bbc_contacts', JSON.stringify(contacts));
+                Storage.setItem('bbc_contacts', JSON.stringify(contacts));
                 
                 closeProtocolModal();
                 showContactDetail(entityId);
@@ -3355,7 +3440,7 @@ Ihr BBC Team`
                         protocol: []
                     };
                     companies.push(newCompany);
-                    localStorage.setItem('bbc_companies', JSON.stringify(companies));
+                    Storage.setItem('bbc_companies', JSON.stringify(companies));
                     companyId = newCompany.id;
                     console.log('New company created:', newCompany.name);
                 }
@@ -3420,11 +3505,11 @@ Ihr BBC Team`
                 if (company) {
                     company.status = status;
                     updateCompanyServices(companyId);
-                    localStorage.setItem('bbc_companies', JSON.stringify(companies));
+                    Storage.setItem('bbc_companies', JSON.stringify(companies));
                 }
             }
             
-            localStorage.setItem('bbc_contacts', JSON.stringify(contacts));
+            Storage.setItem('bbc_contacts', JSON.stringify(contacts));
             closeContactModal();
             renderContacts();
             renderCompanies();
@@ -3473,7 +3558,7 @@ Ihr BBC Team`
             if (service) {
                 if (!customServices.includes(service)) {
                     customServices.push(service);
-                    localStorage.setItem('bbc_custom_services', JSON.stringify(customServices));
+                    Storage.setItem('bbc_custom_services', JSON.stringify(customServices));
                 }
                 addCustomServiceToList(service);
                 input.value = '';
@@ -4299,7 +4384,7 @@ Ihr BBC Team`
                         if (!deal || !deal.protocol) return;
                         
                         deal.protocol.splice(index, 1);
-                        localStorage.setItem('bbc_deals', JSON.stringify(deals));
+                        Storage.setItem('bbc_deals', JSON.stringify(deals));
                         showDealDetail(dealId);
                     }
                 );
@@ -4320,7 +4405,7 @@ Ihr BBC Team`
                         const index = contact.protocol.findIndex(e => e.id === entryId);
                         if (index > -1) {
                             contact.protocol.splice(index, 1);
-                            localStorage.setItem('bbc_contacts', JSON.stringify(contacts));
+                            Storage.setItem('bbc_contacts', JSON.stringify(contacts));
                             showContactDetail(entityId);
                         }
                     } else if (entityType === 'company') {
@@ -4330,7 +4415,7 @@ Ihr BBC Team`
                         const index = company.protocol.findIndex(e => e.id === entryId);
                         if (index > -1) {
                             company.protocol.splice(index, 1);
-                            localStorage.setItem('bbc_companies', JSON.stringify(companies));
+                            Storage.setItem('bbc_companies', JSON.stringify(companies));
                             showCompanyDetail(entityId);
                         }
                     } else if (entityType === 'deal') {
@@ -4340,7 +4425,7 @@ Ihr BBC Team`
                         const index = deal.protocol.findIndex(e => e.id === entryId);
                         if (index > -1) {
                             deal.protocol.splice(index, 1);
-                            localStorage.setItem('bbc_deals', JSON.stringify(deals));
+                            Storage.setItem('bbc_deals', JSON.stringify(deals));
                             showDealDetail(entityId);
                         }
                     }
@@ -4356,7 +4441,7 @@ Ihr BBC Team`
                     if (!company || !company.protocol) return;
                     
                     company.protocol.splice(index, 1);
-                    localStorage.setItem('bbc_companies', JSON.stringify(companies));
+                    Storage.setItem('bbc_companies', JSON.stringify(companies));
                     showCompanyDetail(companyId);
                 }
             );
@@ -4387,7 +4472,7 @@ Ihr BBC Team`
                 
                 if (!availableTags.includes(tag)) {
                     availableTags.push(tag);
-                    localStorage.setItem('bbc_available_tags', JSON.stringify(availableTags));
+                    Storage.setItem('bbc_available_tags', JSON.stringify(availableTags));
                 }
                 
                 renderSelectedTags();
@@ -4500,7 +4585,7 @@ Ihr BBC Team`
                 }
             });
             
-            localStorage.setItem('bbc_tasks', JSON.stringify(tasks));
+            Storage.setItem('bbc_tasks', JSON.stringify(tasks));
         }
         
         function sortTasksByPriority(tasksArray) {
@@ -4562,7 +4647,7 @@ Ihr BBC Team`
             company.notes = document.getElementById('companyEditNotes').value;
             company.status = document.getElementById('companyEditStatus').value;
             
-            localStorage.setItem('bbc_companies', JSON.stringify(companies));
+            Storage.setItem('bbc_companies', JSON.stringify(companies));
             
             closeCompanyEditModal();
             showCompanyDetail(companyId);
@@ -4658,13 +4743,13 @@ Ihr BBC Team`
             };
             
             deals.push(deal);
-            localStorage.setItem('bbc_deals', JSON.stringify(deals));
+            Storage.setItem('bbc_deals', JSON.stringify(deals));
             
             // Update company score
             const company = companies.find(c => c.id === companyId);
             if (company) {
                 company.score = score;
-                localStorage.setItem('bbc_companies', JSON.stringify(companies));
+                Storage.setItem('bbc_companies', JSON.stringify(companies));
             }
             
             closeDealModal();
@@ -4781,7 +4866,7 @@ Ihr BBC Team`
             
             if (deal) {
                 deal.stage = stage;
-                localStorage.setItem('bbc_deals', JSON.stringify(deals));
+                Storage.setItem('bbc_deals', JSON.stringify(deals));
                 renderPipeline();
                 
                 // Update Dashboard if currently visible
@@ -4856,7 +4941,7 @@ Ihr BBC Team`
             createOrderFromDeal(deal);
             
             // Save
-            localStorage.setItem('bbc_deals', JSON.stringify(deals));
+            Storage.setItem('bbc_deals', JSON.stringify(deals));
             
             console.log('Deal saved, refreshing views...');
             
@@ -4932,7 +5017,7 @@ Ihr BBC Team`
             deal.confirmedAt = new Date().toISOString();
             
             // Save
-            localStorage.setItem('bbc_deals', JSON.stringify(deals));
+            Storage.setItem('bbc_deals', JSON.stringify(deals));
             
             console.log('Deal saved, refreshing views...');
             
@@ -4970,20 +5055,20 @@ Ihr BBC Team`
             };
             
             orders.push(order);
-            localStorage.setItem('bbc_orders', JSON.stringify(orders));
+            Storage.setItem('bbc_orders', JSON.stringify(orders));
             
             // Add order to company
             if (company) {
                 if (!company.orders) company.orders = [];
                 company.orders.push(order.id);
-                localStorage.setItem('bbc_companies', JSON.stringify(companies));
+                Storage.setItem('bbc_companies', JSON.stringify(companies));
             }
             
             // Show success notification
             showNotification('🎉 Auftrag erstellt!', `Auftrag ${order.orderNumber} wurde automatisch für ${company ? company.name : 'Unbekannt'} erstellt.`);
         }
         
-        function showNotification(title, message) {
+        function showNotification(title, message, duration = 4000) {
             const notification = document.createElement('div');
             notification.style.cssText = `
                 position: fixed;
@@ -5006,7 +5091,7 @@ Ihr BBC Team`
             setTimeout(() => {
                 notification.style.animation = 'slideOutRight 0.3s ease';
                 setTimeout(() => notification.remove(), 300);
-            }, 4000);
+            }, duration);
         }
         
         // Tasks
@@ -5183,7 +5268,7 @@ Ihr BBC Team`
                 tasks.push(task);
             }
             
-            localStorage.setItem('bbc_tasks', JSON.stringify(tasks));
+            Storage.setItem('bbc_tasks', JSON.stringify(tasks));
             closeTaskModal();
             renderTasks();
             checkOverdueTasks();
@@ -5310,7 +5395,7 @@ Ihr BBC Team`
             const task = tasks.find(t => t.id === taskId);
             if (task) {
                 task.status = task.status === 'offen' ? 'erledigt' : 'offen';
-                localStorage.setItem('bbc_tasks', JSON.stringify(tasks));
+                Storage.setItem('bbc_tasks', JSON.stringify(tasks));
                 renderTasks();
             }
         }
@@ -5323,7 +5408,7 @@ Ihr BBC Team`
                 `Möchten Sie die Aufgabe "${task.title}" wirklich löschen?`,
                 function() {
                     tasks = tasks.filter(t => t.id !== taskId);
-                    localStorage.setItem('bbc_tasks', JSON.stringify(tasks));
+                    Storage.setItem('bbc_tasks', JSON.stringify(tasks));
                     renderTasks();
                 }
             );
@@ -5339,11 +5424,11 @@ Ihr BBC Team`
                 function() {
                     // Delete related tasks
                     tasks = tasks.filter(t => t.contactId !== contactId);
-                    localStorage.setItem('bbc_tasks', JSON.stringify(tasks));
+                    Storage.setItem('bbc_tasks', JSON.stringify(tasks));
                     
                     // Delete contact
                     contacts = contacts.filter(c => c.id !== contactId);
-                    localStorage.setItem('bbc_contacts', JSON.stringify(contacts));
+                    Storage.setItem('bbc_contacts', JSON.stringify(contacts));
                     
                     renderContacts();
                     populateRelatedDropdown();
@@ -5378,15 +5463,15 @@ Ihr BBC Team`
                         contact.companyId = null;
                     }
                 });
-                localStorage.setItem('bbc_contacts', JSON.stringify(contacts));
+                Storage.setItem('bbc_contacts', JSON.stringify(contacts));
                 
                 // Delete deals
                 deals = deals.filter(d => d.companyId !== companyId);
-                localStorage.setItem('bbc_deals', JSON.stringify(deals));
+                Storage.setItem('bbc_deals', JSON.stringify(deals));
                 
                 // Delete company
                 companies = companies.filter(c => c.id !== companyId);
-                localStorage.setItem('bbc_companies', JSON.stringify(companies));
+                Storage.setItem('bbc_companies', JSON.stringify(companies));
                 
                 renderCompanies();
                 renderContacts();
@@ -5410,7 +5495,7 @@ Ihr BBC Team`
                     const companyId = deal.companyId;
                     
                     deals = deals.filter(d => d.id !== dealId);
-                    localStorage.setItem('bbc_deals', JSON.stringify(deals));
+                    Storage.setItem('bbc_deals', JSON.stringify(deals));
                     
                     renderPipeline();
                     renderCompanies();
@@ -5496,11 +5581,11 @@ Ihr BBC Team`
                 function() {
                     // Delete related tasks
                     tasks = tasks.filter(t => !ids.includes(t.contactId));
-                    localStorage.setItem('bbc_tasks', JSON.stringify(tasks));
+                    Storage.setItem('bbc_tasks', JSON.stringify(tasks));
                     
                     // Delete contacts
                     contacts = contacts.filter(c => !ids.includes(c.id));
-                    localStorage.setItem('bbc_contacts', JSON.stringify(contacts));
+                    Storage.setItem('bbc_contacts', JSON.stringify(contacts));
                     
                     deselectAllContacts();
                     renderContacts();
@@ -5574,15 +5659,15 @@ Ihr BBC Team`
                         contact.companyId = null;
                     }
                 });
-                localStorage.setItem('bbc_contacts', JSON.stringify(contacts));
+                Storage.setItem('bbc_contacts', JSON.stringify(contacts));
                 
                 // Delete deals
                 deals = deals.filter(d => !ids.includes(d.companyId));
-                localStorage.setItem('bbc_deals', JSON.stringify(deals));
+                Storage.setItem('bbc_deals', JSON.stringify(deals));
                 
                 // Delete companies
                 companies = companies.filter(c => !ids.includes(c.id));
-                localStorage.setItem('bbc_companies', JSON.stringify(companies));
+                Storage.setItem('bbc_companies', JSON.stringify(companies));
                 
                 deselectAllCompanies();
                 renderCompanies();
@@ -5638,7 +5723,7 @@ Ihr BBC Team`
                 `Möchten Sie ${ids.length} Aufgabe(n) wirklich löschen?`,
                 function() {
                     tasks = tasks.filter(t => !ids.includes(t.id));
-                    localStorage.setItem('bbc_tasks', JSON.stringify(tasks));
+                    Storage.setItem('bbc_tasks', JSON.stringify(tasks));
                     
                     deselectAllTasks();
                     renderTasks();
@@ -5922,9 +6007,9 @@ Ihr BBC Team`
             });
             
             // Save to localStorage
-            localStorage.setItem('bbc_contacts', JSON.stringify(contacts));
-            localStorage.setItem('bbc_companies', JSON.stringify(companies));
-            localStorage.setItem('bbc_available_tags', JSON.stringify(availableTags));
+            Storage.setItem('bbc_contacts', JSON.stringify(contacts));
+            Storage.setItem('bbc_companies', JSON.stringify(companies));
+            Storage.setItem('bbc_available_tags', JSON.stringify(availableTags));
             
             closeCsvMappingModal();
             renderContacts();
@@ -5943,9 +6028,9 @@ Ihr BBC Team`
         // SETTINGS FUNKTIONEN
         // ==========================================
         let currentSettingsTab = 'employees';
-        let generalSettings = JSON.parse(localStorage.getItem('bbc_general_settings') || '{}');
-        let dealStages = JSON.parse(localStorage.getItem('bbc_deal_stages') || '["Qualifizierung", "Angebot", "Verhandlung", "Abgeschlossen gewonnen", "Abgeschlossen verloren"]');
-        let leadStatuses = JSON.parse(localStorage.getItem('bbc_lead_statuses') || '["Einfacher Kontakt", "Akquise", "In Bearbeitung", "Kunde", "Ehemaliger Kunde", "Partner"]');
+        let generalSettings = JSON.parse(Storage.getItem('bbc_general_settings') || '{}');
+        let dealStages = JSON.parse(Storage.getItem('bbc_deal_stages') || '["Qualifizierung", "Angebot", "Verhandlung", "Abgeschlossen gewonnen", "Abgeschlossen verloren"]');
+        let leadStatuses = JSON.parse(Storage.getItem('bbc_lead_statuses') || '["Einfacher Kontakt", "Akquise", "In Bearbeitung", "Kunde", "Ehemaliger Kunde", "Partner"]');
 
         function switchSettingsTab(tabName) {
             currentSettingsTab = tabName;
@@ -6032,7 +6117,7 @@ Ihr BBC Team`
                 employees.push(emp);
             }
             
-            localStorage.setItem('bbc_employees', JSON.stringify(employees));
+            Storage.setItem('bbc_employees', JSON.stringify(employees));
             closeEmployeeModal();
             renderEmployeesList();
             loadEmployees();
@@ -6043,7 +6128,7 @@ Ihr BBC Team`
             if (!emp) return;
             showConfirmModal(`${emp.name} löschen?`, function() {
                 employees = employees.filter(e => e.id !== id);
-                localStorage.setItem('bbc_employees', JSON.stringify(employees));
+                Storage.setItem('bbc_employees', JSON.stringify(employees));
                 renderEmployeesList();
                 loadEmployees();
             });
@@ -6069,7 +6154,7 @@ Ihr BBC Team`
             if (!s) { alert('Bitte Leistung eingeben'); return; }
             if (customServices.includes(s)) { alert('Existiert bereits'); return; }
             customServices.push(s);
-            localStorage.setItem('bbc_custom_services', JSON.stringify(customServices));
+            Storage.setItem('bbc_custom_services', JSON.stringify(customServices));
             input.value = '';
             renderCustomServicesSettings();
         }
@@ -6077,7 +6162,7 @@ Ihr BBC Team`
         function deleteCustomServiceSetting(i) {
             showConfirmModal('Leistung löschen?', function() {
                 customServices.splice(i, 1);
-                localStorage.setItem('bbc_custom_services', JSON.stringify(customServices));
+                Storage.setItem('bbc_custom_services', JSON.stringify(customServices));
                 renderCustomServicesSettings();
             });
         }
@@ -6093,19 +6178,19 @@ Ihr BBC Team`
 
         function updateDealStage(i, v) {
             dealStages[i] = v;
-            localStorage.setItem('bbc_deal_stages', JSON.stringify(dealStages));
+            Storage.setItem('bbc_deal_stages', JSON.stringify(dealStages));
         }
 
         function addDealStage() {
             dealStages.push('Neue Phase');
-            localStorage.setItem('bbc_deal_stages', JSON.stringify(dealStages));
+            Storage.setItem('bbc_deal_stages', JSON.stringify(dealStages));
             renderDealStagesList();
         }
 
         function deleteDealStage(i) {
             if (dealStages.length <= 1) { alert('Min. 1 Phase erforderlich'); return; }
             dealStages.splice(i, 1);
-            localStorage.setItem('bbc_deal_stages', JSON.stringify(dealStages));
+            Storage.setItem('bbc_deal_stages', JSON.stringify(dealStages));
             renderDealStagesList();
         }
 
@@ -6120,19 +6205,19 @@ Ihr BBC Team`
 
         function updateLeadStatus(i, v) {
             leadStatuses[i] = v;
-            localStorage.setItem('bbc_lead_statuses', JSON.stringify(leadStatuses));
+            Storage.setItem('bbc_lead_statuses', JSON.stringify(leadStatuses));
         }
 
         function addLeadStatus() {
             leadStatuses.push('Neuer Status');
-            localStorage.setItem('bbc_lead_statuses', JSON.stringify(leadStatuses));
+            Storage.setItem('bbc_lead_statuses', JSON.stringify(leadStatuses));
             renderLeadStatusesList();
         }
 
         function deleteLeadStatus(i) {
             if (leadStatuses.length <= 1) { alert('Min. 1 Status erforderlich'); return; }
             leadStatuses.splice(i, 1);
-            localStorage.setItem('bbc_lead_statuses', JSON.stringify(leadStatuses));
+            Storage.setItem('bbc_lead_statuses', JSON.stringify(leadStatuses));
             renderLeadStatusesList();
         }
 
@@ -6152,7 +6237,7 @@ Ihr BBC Team`
                 enableReminders: document.getElementById('enableReminders').checked,
                 reminderDays: parseInt(document.getElementById('reminderDays').value)
             };
-            localStorage.setItem('bbc_general_settings', JSON.stringify(generalSettings));
+            Storage.setItem('bbc_general_settings', JSON.stringify(generalSettings));
             alert('Einstellungen gespeichert!');
         }
 
@@ -6193,16 +6278,16 @@ Ihr BBC Team`
                     leadStatuses = b.leadStatuses || [];
                     generalSettings = b.generalSettings || {};
                     
-                    localStorage.setItem('bbc_contacts', JSON.stringify(contacts));
-                    localStorage.setItem('bbc_companies', JSON.stringify(companies));
-                    localStorage.setItem('bbc_deals', JSON.stringify(deals));
-                    localStorage.setItem('bbc_tasks', JSON.stringify(tasks));
-                    localStorage.setItem('bbc_employees', JSON.stringify(employees));
-                    localStorage.setItem('bbc_custom_services', JSON.stringify(customServices));
-                    localStorage.setItem('bbc_available_tags', JSON.stringify(availableTags));
-                    localStorage.setItem('bbc_deal_stages', JSON.stringify(dealStages));
-                    localStorage.setItem('bbc_lead_statuses', JSON.stringify(leadStatuses));
-                    localStorage.setItem('bbc_general_settings', JSON.stringify(generalSettings));
+                    Storage.setItem('bbc_contacts', JSON.stringify(contacts));
+                    Storage.setItem('bbc_companies', JSON.stringify(companies));
+                    Storage.setItem('bbc_deals', JSON.stringify(deals));
+                    Storage.setItem('bbc_tasks', JSON.stringify(tasks));
+                    Storage.setItem('bbc_employees', JSON.stringify(employees));
+                    Storage.setItem('bbc_custom_services', JSON.stringify(customServices));
+                    Storage.setItem('bbc_available_tags', JSON.stringify(availableTags));
+                    Storage.setItem('bbc_deal_stages', JSON.stringify(dealStages));
+                    Storage.setItem('bbc_lead_statuses', JSON.stringify(leadStatuses));
+                    Storage.setItem('bbc_general_settings', JSON.stringify(generalSettings));
                     
                     alert('Backup erfolgreich wiederhergestellt!');
                     location.reload();
@@ -6331,7 +6416,7 @@ Ihr BBC Team`
             }
             
             customServices.push(service);
-            localStorage.setItem('bbc_custom_services', JSON.stringify(customServices));
+            Storage.setItem('bbc_custom_services', JSON.stringify(customServices));
             
             const entityType = document.getElementById('servicesEditEntityType').value;
             const entityId = document.getElementById('servicesEditEntityId').value;
@@ -6358,7 +6443,7 @@ Ihr BBC Team`
                 const contact = contacts.find(c => c.id === entityId);
                 if (contact) {
                     contact.services = selectedServices;
-                    localStorage.setItem('bbc_contacts', JSON.stringify(contacts));
+                    Storage.setItem('bbc_contacts', JSON.stringify(contacts));
                     
                     // Update company services if contact has company
                     if (contact.companyId) {
@@ -6373,7 +6458,7 @@ Ihr BBC Team`
                 const company = companies.find(c => c.id === entityId);
                 if (company) {
                     company.services = selectedServices;
-                    localStorage.setItem('bbc_companies', JSON.stringify(companies));
+                    Storage.setItem('bbc_companies', JSON.stringify(companies));
                     
                     closeServicesEditModal();
                     showCompanyDetail(entityId);
@@ -6619,7 +6704,7 @@ Ihr BBC Team`
                 order.completedAt = new Date().toISOString();
             }
             
-            localStorage.setItem('bbc_orders', JSON.stringify(orders));
+            Storage.setItem('bbc_orders', JSON.stringify(orders));
             showOrderDetail(orderId);
             renderOrders();
         }
@@ -6656,7 +6741,7 @@ Ihr BBC Team`
             if (!order) return;
             
             order.notes = document.getElementById('orderNoteText').value;
-            localStorage.setItem('bbc_orders', JSON.stringify(orders));
+            Storage.setItem('bbc_orders', JSON.stringify(orders));
             showOrderDetail(orderId);
         }
         
@@ -6933,7 +7018,7 @@ Ihr BBC Team`
             }
             
             // Save
-            localStorage.setItem('bbc_orders', JSON.stringify(orders));
+            Storage.setItem('bbc_orders', JSON.stringify(orders));
             
             // Close modal
             const modal = document.getElementById('editOrderModal');
@@ -6949,7 +7034,7 @@ Ihr BBC Team`
         // ==========================================
         // DASHBOARD FUNKTIONEN
         // ==========================================
-        let dashboardGoals = JSON.parse(localStorage.getItem('bbc_dashboard_goals') || JSON.stringify({
+        let dashboardGoals = JSON.parse(Storage.getItem('bbc_dashboard_goals') || JSON.stringify({
             revenue: 500000,
             contacts: 100,
             deals: 50
@@ -7324,7 +7409,7 @@ Ihr BBC Team`
                 contacts: parseInt(document.getElementById('goalContactsInput').value) || 0,
                 deals: parseInt(document.getElementById('goalDealsInput').value) || 0
             };
-            localStorage.setItem('bbc_dashboard_goals', JSON.stringify(dashboardGoals));
+            Storage.setItem('bbc_dashboard_goals', JSON.stringify(dashboardGoals));
             renderDashboard();
         }
         
@@ -7335,6 +7420,17 @@ Ihr BBC Team`
             
             // Load initial data
             loadEmployees();
+            
+            // Check storage availability and show warning
+            setTimeout(() => {
+                if (!Storage.isAvailable()) {
+                    showNotification(
+                        '⚠️ Eingeschränkter Speicher',
+                        'Ihre Daten werden nur temporär gespeichert und gehen beim Schließen verloren. Bitte nutzen Sie die Export-Funktion für Backups oder hosten Sie das CRM auf einer eigenen Domain!',
+                        10000
+                    );
+                }
+            }, 1000);
             
             // Show initial view (Dashboard)
             showView('dashboard');
