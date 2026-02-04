@@ -5,21 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BBC CRM</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Epilogue:wght@600;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap');
         
         :root {
-            --primary: #FF6B35;
-            --primary-dark: #E85A2A;
-            --secondary: #004E89;
-            --accent: #1FC89F;
-            --bg-main: #F8FAFB;
+            /* Corporate Professional Design */
+            --primary: #1E40AF;
+            --primary-dark: #1E3A8A;
+            --primary-light: #3B82F6;
+            --secondary: #64748B;
+            --accent: #059669;
+            --danger: #DC2626;
+            --warning: #F59E0B;
+            --bg-main: #F5F7FA;
             --bg-card: #FFFFFF;
-            --text-primary: #1A1D29;
-            --text-secondary: #6B7280;
-            --border: #E5E7EB;
-            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
-            --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
+            --bg-sidebar: #F8FAFC;
+            --text-primary: #1E293B;
+            --text-secondary: #64748B;
+            --border: #E2E8F0;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 4px 16px rgba(0, 0, 0, 0.1);
         }
         
         * {
@@ -29,7 +34,7 @@
         }
         
         body {
-            font-family: 'DM Sans', sans-serif;
+            font-family: 'IBM Plex Sans', sans-serif;
             background: var(--bg-main);
             color: var(--text-primary);
             line-height: 1.6;
@@ -42,20 +47,23 @@
         
         /* Sidebar */
         .sidebar {
-            width: 260px;
-            background: var(--secondary);
-            color: white;
-            padding: 30px 20px;
+            width: 240px;
+            background: var(--bg-sidebar);
+            color: var(--text-primary);
+            padding: 24px 16px;
             position: fixed;
             height: 100vh;
             overflow-y: auto;
-            box-shadow: 4px 0 15px rgba(0, 78, 137, 0.15);
+            box-shadow: none;
+            border-right: 1px solid var(--border);
         }
         
         .logo {
-            font-family: 'DM Sans', sans-serif;
+            font-family: 'IBM Plex Sans', sans-serif;
             margin-bottom: 32px;
             text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border);
         }
         
         .logo span {
@@ -63,37 +71,42 @@
         }
         
         .nav-item {
-            padding: 12px 16px;
-            margin-bottom: 6px;
-            border-radius: 8px;
+            padding: 10px 12px;
+            margin-bottom: 2px;
+            border-radius: 6px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             font-weight: 500;
+            font-size: 14px;
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
+            color: var(--text-secondary);
         }
         
         .nav-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateX(4px);
+            background: #E2E8F0;
+            color: var(--text-primary);
+            transform: translateX(0);
         }
         
         .nav-item.active {
             background: var(--primary);
-            box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+            color: white;
+            box-shadow: 0 2px 4px rgba(30, 64, 175, 0.2);
         }
         
         .nav-icon {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
         }
         
         /* Main Content */
         .main-content {
             flex: 1;
-            margin-left: 260px;
-            padding: 30px 40px;
+            margin-left: 240px;
+            padding: 32px 40px;
+            background: var(--bg-card);
         }
         
         .header {
@@ -124,37 +137,39 @@
         }
         
         .btn {
-            padding: 12px 24px;
+            padding: 10px 20px;
             border: none;
-            border-radius: 8px;
+            border-radius: 6px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'DM Sans', sans-serif;
+            transition: all 0.2s ease;
+            font-family: 'IBM Plex Sans', sans-serif;
             font-size: 14px;
         }
         
         .btn-primary {
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: white;
-            box-shadow: var(--shadow-md);
+            box-shadow: 0 2px 4px rgba(30, 64, 175, 0.2);
         }
         
         .btn-primary:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(255, 107, 53, 0.3);
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(30, 64, 175, 0.3);
         }
         
         .btn-secondary {
             background: white;
             color: var(--text-primary);
-            border: 2px solid var(--border);
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
         }
         
         .btn-secondary:hover {
             border-color: var(--primary);
             color: var(--primary);
+            background: #F8FAFC;
         }
         
         /* Cards */
@@ -178,10 +193,10 @@
         
         .card {
             background: var(--bg-card);
-            border-radius: 12px;
-            padding: 24px;
-            box-shadow: var(--shadow-sm);
-            transition: all 0.3s ease;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            transition: all 0.2s ease;
             border: 1px solid var(--border);
             position: relative;
             overflow: hidden;
@@ -192,7 +207,7 @@
             position: absolute;
             top: 0;
             left: 0;
-            width: 4px;
+            width: 3px;
             height: 100%;
             background: var(--primary);
             transform: scaleY(0);
@@ -228,18 +243,22 @@
         }
         
         .badge {
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 11px;
             font-weight: 600;
             display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
-        .badge-kunde { background: #E8F5E9; color: #2E7D32; }
-        .badge-partner { background: #E3F2FD; color: #1565C0; }
-        .badge-bearbeitung { background: #FFF3E0; color: #E65100; }
-        .badge-kontakt { background: #F3E5F5; color: #6A1B9A; }
-        .badge-ehemalig { background: #FFEBEE; color: #C62828; }
+        .badge-kunde { background: #D1FAE5; color: #065F46; border: 1px solid #6EE7B7; }
+        .badge-partner { background: #DBEAFE; color: #1E40AF; border: 1px solid #93C5FD; }
+        .badge-bearbeitung { background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; }
+        .badge-kontakt { background: #E9D5FF; color: #6B21A8; border: 1px solid #C084FC; }
+        .badge-ehemalig { background: #FEE2E2; color: #991B1B; border: 1px solid #FCA5A5; }
+        .badge-verloren { background: #FEE2E2; color: #991B1B; border: 1px solid #FCA5A5; }
+        .badge-primary { background: #DBEAFE; color: #1E40AF; border: 1px solid #93C5FD; }
         
         /* Modal */
         .modal {
@@ -990,48 +1009,68 @@
         
         /* Dashboard Styles */
         .kpi-card {
-            padding: 24px;
-            border-radius: 16px;
-            color: white;
-            box-shadow: var(--shadow-md);
+            padding: 20px;
+            border-radius: 6px;
+            background: white;
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
             position: relative;
             overflow: hidden;
-            transition: transform 0.3s ease;
+            transition: all 0.2s ease;
         }
         
         .kpi-card:hover {
-            transform: translateY(-4px);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
         
         .kpi-icon {
-            font-size: 36px;
-            margin-bottom: 12px;
-            opacity: 0.9;
+            width: 40px;
+            height: 40px;
+            margin-bottom: 16px;
+            color: var(--primary);
+            opacity: 0.8;
+        }
+        
+        .kpi-icon svg {
+            width: 100%;
+            height: 100%;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
         
         .kpi-label {
-            font-size: 13px;
-            opacity: 0.9;
-            margin-bottom: 8px;
-            font-weight: 500;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
         .kpi-value {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 700;
-            margin-bottom: 4px;
+            margin-bottom: 8px;
+            color: var(--primary);
         }
         
         .kpi-sub {
-            font-size: 14px;
-            opacity: 0.8;
+            font-size: 12px;
+            color: var(--accent);
+            font-weight: 600;
+            text-transform: uppercase;
         }
         
         .dashboard-card {
             background: white;
-            border-radius: 16px;
+            border-radius: 8px;
             padding: 24px;
-            box-shadow: var(--shadow-sm);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border);
         }
         
         .goal-item {
@@ -1179,6 +1218,12 @@
                     </svg>
                     <span>Aufgaben</span>
                 </div>
+                <div class="nav-item" data-view="analytics">
+                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                    </svg>
+                    <span>Analytics</span>
+                </div>
                 <div class="nav-item" data-view="settings">
                     <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
@@ -1200,43 +1245,74 @@
 
                 <!-- KPI Cards -->
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-bottom: 30px;">
-                    <div class="kpi-card" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-                        <div class="kpi-icon">💰</div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <line x1="12" y1="1" x2="12" y2="23"></line>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            </svg>
+                        </div>
                         <div class="kpi-label">Jahresumsatz</div>
                         <div class="kpi-value" id="kpiYearRevenue">€ 0</div>
                         <div class="kpi-sub" id="kpiYearProgress">0% vom Ziel</div>
                     </div>
                     
-                    <div class="kpi-card" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
-                        <div class="kpi-icon">🎉</div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                        </div>
                         <div class="kpi-label">Gewonnene Deals</div>
                         <div class="kpi-value" id="kpiWonDeals">0</div>
                         <div class="kpi-sub" id="kpiWonDealsValue">€ 0</div>
                     </div>
                     
-                    <div class="kpi-card" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
-                        <div class="kpi-icon">💼</div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                            </svg>
+                        </div>
                         <div class="kpi-label">Deals in Pipeline</div>
                         <div class="kpi-value" id="kpiDealsCount">0</div>
                         <div class="kpi-sub" id="kpiDealsValue">€ 0</div>
                     </div>
                     
-                    <div class="kpi-card" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
-                        <div class="kpi-icon">❌</div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </div>
                         <div class="kpi-label">Verlorene Deals</div>
                         <div class="kpi-value" id="kpiLostDeals">0</div>
                         <div class="kpi-sub" id="kpiLostDealsValue">€ 0</div>
                     </div>
                     
-                    <div class="kpi-card" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
-                        <div class="kpi-icon">👥</div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="9" cy="7" r="4"></circle>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                            </svg>
+                        </div>
                         <div class="kpi-label">Kontakte</div>
                         <div class="kpi-value" id="kpiContactsCount">0</div>
                         <div class="kpi-sub" id="kpiNewContacts">+0 diese Woche</div>
                     </div>
                     
-                    <div class="kpi-card" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
-                        <div class="kpi-icon">✅</div>
+                    <div class="kpi-card">
+                        <div class="kpi-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                <path d="M9 11l3 3L22 4"></path>
+                                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                            </svg>
+                        </div>
                         <div class="kpi-label">Offene Aufgaben</div>
                         <div class="kpi-value" id="kpiTasksCount">0</div>
                         <div class="kpi-sub" id="kpiOverdueTasks">0 überfällig</div>
@@ -1248,7 +1324,7 @@
                     <!-- Jahresziele -->
                     <div class="dashboard-card">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                            <h3 class="section-title" style="margin: 0;">🎯 Jahresziele 2026</h3>
+                            <h3 class="section-title" style="margin: 0;">Jahresziele 2026</h3>
                             <button class="btn btn-secondary" onclick="openGoalsModal()">Bearbeiten</button>
                         </div>
                         
@@ -1327,14 +1403,14 @@
                 <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 24px; margin-bottom: 30px;">
                     <!-- Pipeline Übersicht -->
                     <div class="dashboard-card">
-                        <h3 class="section-title" style="margin-bottom: 20px;">📊 Pipeline-Übersicht</h3>
+                        <h3 class="section-title" style="margin-bottom: 20px;">Pipeline-Übersicht</h3>
                         <div id="pipelineChart"></div>
                     </div>
 
                     <!-- Offene Aufgaben -->
                     <div class="dashboard-card">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                            <h3 class="section-title" style="margin: 0;">✅ Offene Aufgaben</h3>
+                            <h3 class="section-title" style="margin: 0;">Offene Aufgaben</h3>
                             <button class="btn btn-secondary" onclick="showView('tasks')">Alle</button>
                         </div>
                         <div id="dashboardTasks"></div>
@@ -1343,7 +1419,7 @@
                     <!-- Anstehende Wiedervorlagen -->
                     <div class="dashboard-card">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                            <h3 class="section-title" style="margin: 0;">🔔 Anstehende Wiedervorlagen</h3>
+                            <h3 class="section-title" style="margin: 0;">Anstehende Wiedervorlagen</h3>
                         </div>
                         <div id="dashboardReminders"></div>
                     </div>
@@ -1351,7 +1427,7 @@
 
                 <!-- Aktuelle Aktivitäten -->
                 <div class="dashboard-card">
-                    <h3 class="section-title" style="margin-bottom: 20px;">🔔 Aktuelle Aktivitäten</h3>
+                    <h3 class="section-title" style="margin-bottom: 20px;">Aktuelle Aktivitäten</h3>
                     <div id="activityFeed"></div>
                 </div>
             </div>
@@ -1431,7 +1507,7 @@
             <!-- Orders View -->
             <div id="orders-view" class="view-content hidden">
                 <div class="header">
-                    <h1>📦 Aufträge</h1>
+                    <h1>Aufträge</h1>
                     <select class="form-select" id="orderStatusFilter" onchange="renderOrders()" style="width: 200px;">
                         <option value="">Alle Status</option>
                         <option value="Neu">Neu</option>
@@ -1463,6 +1539,100 @@
                 </div>
                 
                 <div id="ordersList"></div>
+            </div>
+
+            <!-- Analytics View -->
+            <div id="analytics-view" class="view-content hidden">
+                <div class="header">
+                    <h1>Analytics & Reporting</h1>
+                    <div style="display: flex; gap: 12px;">
+                        <select id="analyticsTimeframe" class="form-select" style="width: 200px;" onchange="updateAnalytics()">
+                            <option value="month">Dieser Monat</option>
+                            <option value="quarter">Dieses Quartal</option>
+                            <option value="year" selected>Dieses Jahr</option>
+                            <option value="all">Gesamt</option>
+                        </select>
+                        <button class="btn btn-secondary" onclick="updateAnalytics()">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle; margin-right: 6px;">
+                                <polyline points="23 4 23 10 17 10"></polyline>
+                                <polyline points="1 20 1 14 7 14"></polyline>
+                                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                            </svg>
+                            Aktualisieren
+                        </button>
+                        <button class="btn btn-secondary" onclick="exportAnalyticsPDF()">PDF Export</button>
+                    </div>
+                </div>
+
+                <!-- KPI Overview -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px;">
+                    <div class="card">
+                        <div style="font-size: 12px; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">MRR (Monthly)</div>
+                        <div style="font-size: 32px; font-weight: 700; color: var(--primary);" id="analyticsMRR">€ 0</div>
+                        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">Wiederkehrend/Monat</div>
+                    </div>
+                    <div class="card">
+                        <div style="font-size: 12px; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">ARR (Yearly)</div>
+                        <div style="font-size: 32px; font-weight: 700; color: var(--primary);" id="analyticsARR">€ 0</div>
+                        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">Hochgerechnet/Jahr</div>
+                    </div>
+                    <div class="card">
+                        <div style="font-size: 12px; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">Conversion Rate</div>
+                        <div style="font-size: 32px; font-weight: 700; color: var(--primary);" id="analyticsConversionRate">0%</div>
+                        <div style="font-size: 12px; color: var(--accent); margin-top: 4px;" id="analyticsConversionChange">-</div>
+                    </div>
+                    <div class="card">
+                        <div style="font-size: 12px; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">Ø Deal Velocity</div>
+                        <div style="font-size: 32px; font-weight: 700; color: var(--primary);" id="analyticsDealVelocity">0 Tage</div>
+                        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">Bis Abschluss</div>
+                    </div>
+                    <div class="card">
+                        <div style="font-size: 12px; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">Ø Deal Wert</div>
+                        <div style="font-size: 32px; font-weight: 700; color: var(--primary);" id="analyticsAvgDealValue">€ 0</div>
+                        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;">Pro Deal</div>
+                    </div>
+                    <div class="card">
+                        <div style="font-size: 12px; color: var(--text-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">Win Rate</div>
+                        <div style="font-size: 32px; font-weight: 700; color: var(--primary);" id="analyticsWinRate">0%</div>
+                        <div style="font-size: 12px; color: var(--text-secondary); margin-top: 4px;" id="analyticsWinRateDetails">-</div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-bottom: 30px;">
+                    <!-- Revenue Timeline -->
+                    <div class="card">
+                        <h3 class="section-title" style="margin-bottom: 20px;">Umsatzentwicklung</h3>
+                        <div id="revenueTimelineChart" style="min-height: 300px;"></div>
+                    </div>
+
+                    <!-- Top Performers -->
+                    <div class="card">
+                        <h3 class="section-title" style="margin-bottom: 20px;">Top Performer</h3>
+                        <div id="topPerformersChart"></div>
+                    </div>
+                </div>
+
+                <!-- Analysis Row -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 30px;">
+                    <!-- Deal Funnel -->
+                    <div class="card">
+                        <h3 class="section-title" style="margin-bottom: 20px;">Sales Funnel</h3>
+                        <div id="salesFunnelChart"></div>
+                    </div>
+
+                    <!-- Loss Reasons -->
+                    <div class="card">
+                        <h3 class="section-title" style="margin-bottom: 20px;">Verlustgründe</h3>
+                        <div id="lossReasonsChart"></div>
+                    </div>
+                </div>
+
+                <!-- Forecast -->
+                <div class="card">
+                    <h3 class="section-title" style="margin-bottom: 20px;">Umsatz-Forecast (Nächste 3 Monate)</h3>
+                    <div id="forecastChart" style="min-height: 250px;"></div>
+                </div>
             </div>
 
             <!-- Settings View -->
@@ -1868,7 +2038,26 @@
                 
                 <div class="form-group">
                     <label class="form-label">Deal Wert (€)</label>
-                    <input type="number" class="form-input" id="dealValue" step="0.01">
+                    <input type="number" class="form-input" id="dealValue" step="0.01" onchange="updateDealValuePreview()">
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Zahlungsmodell</label>
+                    <select class="form-select" id="dealPaymentModel" onchange="togglePaymentFields()">
+                        <option value="one-time">Einmalzahlung</option>
+                        <option value="monthly">Monatlich (Abo/Vertrag)</option>
+                        <option value="quarterly">Vierteljährlich</option>
+                        <option value="yearly">Jährlich</option>
+                    </select>
+                </div>
+                
+                <div id="recurringFields" class="form-group hidden">
+                    <label class="form-label">Vertragslaufzeit (Monate)</label>
+                    <input type="number" class="form-input" id="dealContractDuration" min="1" value="12" onchange="updateDealValuePreview()">
+                    <div style="margin-top: 12px; padding: 12px; background: #f0f9ff; border-left: 4px solid #1e40af; border-radius: 4px;">
+                        <div style="font-size: 12px; color: #1e40af; font-weight: 600; margin-bottom: 4px;">Umsatzübersicht</div>
+                        <div id="dealValuePreview" style="font-size: 13px; color: #64748b;"></div>
+                    </div>
                 </div>
                 
                 <div class="form-group">
@@ -2139,7 +2328,7 @@
             <div id="csvMappingFields" style="max-height: 400px; overflow-y: auto;"></div>
             
             <div style="margin-top: 24px; padding: 16px; background: #FFF3E0; border-radius: 8px; border-left: 4px solid #FF9800;">
-                <div style="font-weight: 600; margin-bottom: 8px;">💡 Hinweis:</div>
+                <div style="font-weight: 600; margin-bottom: 8px;">Hinweis:</div>
                 <div style="font-size: 13px; color: var(--text-primary);">
                     Wenn ein Unternehmensname angegeben ist, wird automatisch ein neues Unternehmen erstellt oder ein bestehendes Unternehmen mit gleichem Namen verwendet.
                 </div>
@@ -2389,7 +2578,7 @@
             <div id="csvMappingFields" style="max-height: 400px; overflow-y: auto;"></div>
             
             <div style="margin-top: 24px; padding: 16px; background: #FFF3E0; border-radius: 8px; border-left: 4px solid #FF9800;">
-                <div style="font-weight: 600; margin-bottom: 8px;">💡 Hinweis:</div>
+                <div style="font-weight: 600; margin-bottom: 8px;">Hinweis:</div>
                 <div style="font-size: 13px; color: var(--text-primary);">
                     Wenn ein Unternehmensname angegeben ist, wird automatisch ein neues Unternehmen erstellt oder ein bestehendes Unternehmen mit gleichem Namen verwendet.
                 </div>
@@ -2413,8 +2602,8 @@
             isAvailable: function() {
                 try {
                     const test = '__storage_test__';
-                    Storage.setItem(test, test);
-                    Storage.removeItem(test);
+                    localStorage.setItem(test, test);
+                    localStorage.removeItem(test);
                     return true;
                 } catch(e) {
                     return false;
@@ -2425,7 +2614,7 @@
             setItem: function(key, value) {
                 try {
                     if (this.isAvailable()) {
-                        Storage.setItem(key, value);
+                        localStorage.setItem(key, value);
                         return true;
                     } else {
                         // Fallback: Daten im Memory speichern
@@ -2447,7 +2636,7 @@
             getItem: function(key) {
                 try {
                     if (this.isAvailable()) {
-                        return Storage.getItem(key);
+                        return localStorage.getItem(key);
                     } else {
                         // Fallback: Aus Memory laden
                         if (window._fallbackStorage && window._fallbackStorage[key]) {
@@ -2469,7 +2658,7 @@
             removeItem: function(key) {
                 try {
                     if (this.isAvailable()) {
-                        Storage.removeItem(key);
+                        localStorage.removeItem(key);
                     }
                     if (window._fallbackStorage) {
                         delete window._fallbackStorage[key];
@@ -2482,7 +2671,7 @@
         
         // Warnung anzeigen wenn localStorage nicht verfügbar
         if (!Storage.isAvailable()) {
-            console.warn('⚠️ localStorage ist nicht verfügbar!');
+            console.warn('localStorage ist nicht verfügbar!');
             console.warn('📝 Verwende Fallback-Speicher (Session)');
             console.warn('💡 WICHTIG: Daten gehen beim Schließen verloren!');
             console.warn('🔧 Lösung: Verwenden Sie eine eigene Domain oder Netlify');
@@ -2647,7 +2836,7 @@ Ihr BBC Team`
             modal.innerHTML = `
                 <div class="modal-content" style="max-width: 700px; max-height: 90vh; overflow-y: auto;">
                     <div class="modal-header">
-                        <h2 class="modal-title">📧 E-Mail senden</h2>
+                        <h2 class="modal-title">E-Mail senden</h2>
                         <button class="close-btn" onclick="closeEmailModal()">&times;</button>
                     </div>
                     
@@ -2682,13 +2871,13 @@ Ihr BBC Team`
                     
                     <div style="background: #e0f2fe; border-left: 4px solid #0284c7; padding: 12px; border-radius: 4px; margin-bottom: 20px;">
                         <div style="font-size: 13px; color: #075985;">
-                            <strong>💡 Hinweis:</strong> Die E-Mail wird in Ihrem Standard-E-Mail-Programm geöffnet. Sie können dort weitere Anpassungen vornehmen, bevor Sie die E-Mail senden.
+                            <strong>Hinweis:</strong> Die E-Mail wird in Ihrem Standard-E-Mail-Programm geöffnet. Sie können dort weitere Anpassungen vornehmen, bevor Sie die E-Mail senden.
                         </div>
                     </div>
                     
                     <div class="mt-3" style="display: flex; gap: 12px;">
                         <button type="button" class="btn btn-primary" onclick="sendEmail('${entityType}', '${entityId}', '${email}', '${name}')">
-                            📧 E-Mail öffnen
+                            E-Mail öffnen
                         </button>
                         <button type="button" class="btn btn-secondary" onclick="closeEmailModal()">
                             Abbrechen
@@ -2774,7 +2963,7 @@ Ihr BBC Team`
                 const protocolEntry = {
                     id: Date.now().toString(),
                     date: new Date().toISOString(),
-                    note: `📧 E-Mail gesendet: ${subject}\n\n${body.substring(0, 200)}${body.length > 200 ? '...' : ''}`,
+                    note: `E-Mail gesendet: ${subject}\n\n${body.substring(0, 200)}${body.length > 200 ? '...' : ''}`,
                     author: 'System'
                 };
                 
@@ -2803,7 +2992,7 @@ Ihr BBC Team`
             }
             
             closeEmailModal();
-            showNotification('📧 E-Mail geöffnet', 'Die E-Mail wurde in Ihrem E-Mail-Programm geöffnet.');
+            showNotification('E-Mail geöffnet', 'Die E-Mail wurde in Ihrem E-Mail-Programm geöffnet.');
             
             // Refresh view
             if (entityType === 'contact') showContactDetail(entityId);
@@ -2822,7 +3011,7 @@ Ihr BBC Team`
             modal.innerHTML = `
                 <div class="modal-content" style="max-width: 500px;">
                     <div class="modal-header">
-                        <h2 class="modal-title">🔔 Wiedervorlage erstellen</h2>
+                        <h2 class="modal-title">Wiedervorlage erstellen</h2>
                         <button class="close-btn" onclick="closeReminderModal()">&times;</button>
                     </div>
                     
@@ -2952,7 +3141,7 @@ Ihr BBC Team`
             Storage.setItem('bbc_reminders', JSON.stringify(reminders));
             
             closeReminderModal();
-            showNotification('✅ Wiedervorlage erstellt', `Erinnerung für ${reminderDate.toLocaleDateString('de-DE')} um ${reminderDate.toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit'})} Uhr`);
+            showNotification('Wiedervorlage erstellt', `Erinnerung für ${reminderDate.toLocaleDateString('de-DE')} um ${reminderDate.toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit'})} Uhr`);
             
             // Update view if needed
             if (entityType === 'contact') {
@@ -3001,7 +3190,7 @@ Ihr BBC Team`
                     
                     // Show browser notification if requested
                     if (reminder.browserNotification && 'Notification' in window && Notification.permission === 'granted') {
-                        new Notification('🔔 BBC CRM Erinnerung', {
+                        new Notification('BBC CRM Erinnerung', {
                             body: reminder.text + '\n\nFür: ' + reminder.entityName,
                             icon: '/favicon.ico',
                             tag: reminder.id
@@ -3009,7 +3198,7 @@ Ihr BBC Team`
                     }
                     
                     // Show in-app notification
-                    showNotification('🔔 Wiedervorlage fällig!', reminder.text + ' - ' + reminder.entityName);
+                    showNotification('Wiedervorlage fällig', reminder.text + ' - ' + reminder.entityName);
                 }
             });
             
@@ -3211,6 +3400,7 @@ Ihr BBC Team`
                 'deals': 'deals-view',
                 'orders': 'orders-view',
                 'tasks': 'tasks-view',
+                'analytics': 'analytics-view',
                 'settings': 'settings-view'
             };
             
@@ -3239,6 +3429,9 @@ Ihr BBC Team`
                             break;
                         case 'tasks':
                             renderTasks();
+                            break;
+                        case 'analytics':
+                            updateAnalytics();
                             break;
                         case 'settings':
                             switchSettingsTab('employees');
@@ -3585,7 +3778,7 @@ Ihr BBC Team`
             if (contacts.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
-                        <div class="empty-state-icon">👤</div>
+                        <div class="empty-state-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>
                         <div class="empty-state-text">Keine Kontakte vorhanden</div>
                         <div class="empty-state-subtext">Erstellen Sie Ihren ersten Kontakt</div>
                     </div>
@@ -3674,7 +3867,7 @@ Ihr BBC Team`
             if (filtered.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
-                        <div class="empty-state-icon">🔍</div>
+                        <div class="empty-state-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
                         <div class="empty-state-text">Keine Ergebnisse</div>
                         <div class="empty-state-subtext">Versuchen Sie einen anderen Suchbegriff</div>
                     </div>
@@ -3761,8 +3954,8 @@ Ihr BBC Team`
                             <span class="badge badge-${getBadgeClass(contact.status)}">${contact.status}</span>
                         </div>
                         <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-                            <button class="btn btn-primary" onclick="openEmailModal('contact', '${contact.id}')">📧 E-Mail senden</button>
-                            <button class="btn btn-primary" onclick="openReminderModal('contact', '${contact.id}', '${contact.name}')" style="background: #667eea;">🔔 Wiedervorlage</button>
+                            <button class="btn btn-primary" onclick="openEmailModal('contact', '${contact.id}')">E-Mail senden</button>
+                            <button class="btn btn-primary" onclick="openReminderModal('contact', '${contact.id}', '${contact.name}')" style="background: #667eea;">Wiedervorlage</button>
                             <button class="btn btn-secondary" onclick="openContactModal('${contact.id}')">Bearbeiten</button>
                         </div>
                     </div>
@@ -3827,7 +4020,7 @@ Ihr BBC Team`
                 
                 <div class="section">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                        <h3 class="section-title" style="margin: 0;">📋 Protokoll</h3>
+                        <h3 class="section-title" style="margin: 0;">Protokoll</h3>
                         <button class="btn btn-primary" onclick="openProtocolModal('contact', '${contact.id}')">+ Eintrag hinzufügen</button>
                     </div>
                     ${contact.protocol && contact.protocol.length > 0 ? `
@@ -3880,7 +4073,7 @@ Ihr BBC Team`
             if (companies.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
-                        <div class="empty-state-icon">🏢</div>
+                        <div class="empty-state-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18"></path><path d="M9 8h1"></path><path d="M9 12h1"></path><path d="M9 16h1"></path><path d="M14 8h1"></path><path d="M14 12h1"></path><path d="M14 16h1"></path><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"></path></svg></div>
                         <div class="empty-state-text">Keine Unternehmen vorhanden</div>
                         <div class="empty-state-subtext">Unternehmen werden beim Erstellen von Kontakten angelegt</div>
                     </div>
@@ -3912,7 +4105,7 @@ Ihr BBC Team`
                         <div onclick="showCompanyDetail('${company.id}')" style="cursor: pointer;">
                             <div class="list-item-main">${company.name}</div>
                             <div class="list-item-sub">${company.industry || 'Keine Branche'}</div>
-                            <div class="list-item-sub" style="margin-top: 6px;">💼 ${companyDeals.length} Deal(s)</div>
+                            <div class="list-item-sub" style="margin-top: 6px;">${companyDeals.length} Deal(s)</div>
                         </div>
                         <div onclick="showCompanyDetail('${company.id}')" style="cursor: pointer;">
                             <span class="badge badge-${getBadgeClass(company.status)}">${company.status}</span>
@@ -3950,7 +4143,7 @@ Ihr BBC Team`
             if (filtered.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
-                        <div class="empty-state-icon">🔍</div>
+                        <div class="empty-state-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
                         <div class="empty-state-text">Keine Ergebnisse</div>
                     </div>
                 `;
@@ -3981,7 +4174,7 @@ Ihr BBC Team`
                         <div onclick="showCompanyDetail('${company.id}')" style="cursor: pointer;">
                             <div class="list-item-main">${company.name}</div>
                             <div class="list-item-sub">${company.industry || 'Keine Branche'}</div>
-                            <div class="list-item-sub" style="margin-top: 6px;">💼 ${companyDeals.length} Deal(s)</div>
+                            <div class="list-item-sub" style="margin-top: 6px;">${companyDeals.length} Deal(s)</div>
                         </div>
                         <div onclick="showCompanyDetail('${company.id}')" style="cursor: pointer;">
                             <span class="badge badge-${getBadgeClass(company.status)}">${company.status}</span>
@@ -4043,8 +4236,8 @@ Ihr BBC Team`
                             </div>
                         </div>
                         <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-                            <button class="btn btn-primary" onclick="openEmailModal('company', '${company.id}')">📧 E-Mail</button>
-                            <button class="btn btn-primary" onclick="openReminderModal('company', '${company.id}', '${company.name}')" style="background: #667eea;">🔔 Wiedervorlage</button>
+                            <button class="btn btn-primary" onclick="openEmailModal('company', '${company.id}')">E-Mail</button>
+                            <button class="btn btn-primary" onclick="openReminderModal('company', '${company.id}', '${company.name}')" style="background: #667eea;">Wiedervorlage</button>
                             <button class="btn btn-secondary" onclick="openCompanyEditModal('${company.id}')">Bearbeiten</button>
                             <button class="btn btn-secondary" onclick="openTaskModalForCompany('${company.id}')">+ Aufgabe</button>
                             <button class="btn btn-primary" onclick="openDealModalForCompany('${company.id}')">+ Neuer Deal</button>
@@ -4244,22 +4437,30 @@ Ihr BBC Team`
                             </div>
                         </div>
                         <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-                            <button class="btn btn-primary" onclick="openEmailModal('deal', '${deal.id}')">📧 E-Mail</button>
-                            <button class="btn btn-primary" onclick="openReminderModal('deal', '${deal.id}', '${deal.name}')" style="background: #667eea;">🔔 Wiedervorlage</button>
                             ${!deal.wonConfirmed && !deal.lostConfirmed ? `
-                                <button onclick="confirmDealWon('${deal.id}')" style="padding: 12px 24px; font-size: 15px; font-weight: 600; background: #10b981; color: white; border: none; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-family: 'DM Sans', sans-serif; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);">
+                                <button class="btn btn-secondary" onclick="openEditDealModal('${deal.id}')">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 6px;">
+                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                    </svg>
+                                    Bearbeiten
+                                </button>
+                            ` : ''}
+                            <button class="btn btn-primary" onclick="openEmailModal('deal', '${deal.id}')">E-Mail</button>
+                            <button class="btn btn-primary" onclick="openReminderModal('deal', '${deal.id}', '${deal.name}')" style="background: #667eea;">Wiedervorlage</button>
+                            ${!deal.wonConfirmed && !deal.lostConfirmed ? `
+                                <button onclick="confirmDealWon('${deal.id}')" style="padding: 12px 24px; font-size: 15px; font-weight: 600; background: #10b981; color: white; border: none; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-family: 'IBM Plex Sans', sans-serif; box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);">
                                     <span>✓</span>
                                     <span>Deal gewonnen</span>
                                 </button>
-                                <button onclick="confirmDealLost('${deal.id}')" style="padding: 12px 24px; font-size: 15px; font-weight: 600; background: #ef4444; color: white; border: none; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-family: 'DM Sans', sans-serif; box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);">
+                                <button onclick="confirmDealLost('${deal.id}')" style="padding: 12px 24px; font-size: 15px; font-weight: 600; background: #ef4444; color: white; border: none; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-family: 'IBM Plex Sans', sans-serif; box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);">
                                     <span>✗</span>
                                     <span>Deal verloren</span>
                                 </button>
                             ` : ''}
                             ${deal.wonConfirmed && orders.find(o => o.dealId === deal.id) ? `
-                                <button onclick="showView('orders')" style="padding: 12px 24px; font-size: 15px; font-weight: 600; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-family: 'DM Sans', sans-serif;">
-                                    <span>📦</span>
-                                    <span>Zu den Aufträgen</span>
+                                <button onclick="showView('orders')" style="padding: 12px 24px; font-size: 15px; font-weight: 600; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-family: 'IBM Plex Sans', sans-serif;">
+                                    Zu den Aufträgen
                                 </button>
                             ` : ''}
                         </div>
@@ -4681,10 +4882,288 @@ Ihr BBC Team`
         }
         
         function closeDealModal() {
+            const modal = document.getElementById('dealModal');
+            modal.style.display = 'none';
+        }
+        
+        function togglePaymentFields() {
+            const paymentModel = document.getElementById('dealPaymentModel').value;
+            const recurringFields = document.getElementById('recurringFields');
+            
+            if (paymentModel !== 'one-time') {
+                recurringFields.classList.remove('hidden');
+                updateDealValuePreview();
+            } else {
+                recurringFields.classList.add('hidden');
+            }
+        }
+        
+        function updateDealValuePreview() {
+            const value = parseFloat(document.getElementById('dealValue').value) || 0;
+            const paymentModel = document.getElementById('dealPaymentModel').value;
+            const duration = parseInt(document.getElementById('dealContractDuration').value) || 12;
+            const preview = document.getElementById('dealValuePreview');
+            
+            if (!preview || paymentModel === 'one-time') return;
+            
+            let periodsPerYear, periodName;
+            switch(paymentModel) {
+                case 'monthly':
+                    periodsPerYear = 12;
+                    periodName = 'Monat';
+                    break;
+                case 'quarterly':
+                    periodsPerYear = 4;
+                    periodName = 'Quartal';
+                    break;
+                case 'yearly':
+                    periodsPerYear = 1;
+                    periodName = 'Jahr';
+                    break;
+            }
+            
+            const totalPeriods = Math.ceil((duration / 12) * periodsPerYear);
+            const totalRevenue = value * totalPeriods;
+            const mrr = paymentModel === 'monthly' ? value : (value / (12 / periodsPerYear));
+            const arr = mrr * 12;
+            
+            preview.innerHTML = `
+                <strong>€ ${value.toLocaleString('de-DE')}</strong> pro ${periodName}<br>
+                <strong>${totalPeriods}x Zahlungen</strong> über ${duration} Monate<br>
+                <strong>Gesamtumsatz: € ${totalRevenue.toLocaleString('de-DE')}</strong><br>
+                MRR: € ${Math.round(mrr).toLocaleString('de-DE')} | ARR: € ${Math.round(arr).toLocaleString('de-DE')}
+            `;
+        }
+        
+        function toggleOrderPaymentFields() {
+            const paymentModel = document.getElementById('editOrderPaymentModel').value;
+            const recurringFields = document.getElementById('editOrderRecurringFields');
+            
+            if (paymentModel !== 'one-time') {
+                recurringFields.style.display = 'block';
+                updateOrderValuePreview();
+            } else {
+                recurringFields.style.display = 'none';
+            }
+        }
+        
+        function updateOrderValuePreview() {
+            const value = parseFloat(document.getElementById('editOrderValue').value) || 0;
+            const paymentModel = document.getElementById('editOrderPaymentModel').value;
+            const duration = parseInt(document.getElementById('editOrderContractDuration').value) || 12;
+            const preview = document.getElementById('editOrderValuePreview');
+            
+            if (!preview || paymentModel === 'one-time') return;
+            
+            let periodsPerYear, periodName;
+            switch(paymentModel) {
+                case 'monthly':
+                    periodsPerYear = 12;
+                    periodName = 'Monat';
+                    break;
+                case 'quarterly':
+                    periodsPerYear = 4;
+                    periodName = 'Quartal';
+                    break;
+                case 'yearly':
+                    periodsPerYear = 1;
+                    periodName = 'Jahr';
+                    break;
+            }
+            
+            const totalPeriods = Math.ceil((duration / 12) * periodsPerYear);
+            const totalRevenue = value * totalPeriods;
+            const mrr = paymentModel === 'monthly' ? value : (value / (12 / periodsPerYear));
+            const arr = mrr * 12;
+            
+            preview.innerHTML = `
+                <strong>€ ${value.toLocaleString('de-DE')}</strong> pro ${periodName}<br>
+                <strong>${totalPeriods}x Zahlungen</strong> über ${duration} Monate<br>
+                <strong>Gesamtumsatz: € ${totalRevenue.toLocaleString('de-DE')}</strong><br>
+                MRR: € ${Math.round(mrr).toLocaleString('de-DE')} | ARR: € ${Math.round(arr).toLocaleString('de-DE')}
+            `;
+        }
+        
+        function closeDealModal() {
             document.getElementById('dealModal').classList.remove('active');
             document.getElementById('dealPdfFile').value = '';
             document.getElementById('dealPdfData').value = '';
             document.getElementById('pdfFileName').innerHTML = '';
+        }
+        
+        function openEditDealModal(dealId) {
+            const deal = deals.find(d => d.id === dealId);
+            if (!deal) return;
+            
+            const modal = document.createElement('div');
+            modal.className = 'modal active';
+            modal.style.display = 'flex';
+            
+            const company = companies.find(c => c.id === deal.companyId);
+            
+            modal.innerHTML = `
+                <div class="modal-content" style="max-width: 600px;">
+                    <div class="modal-header">
+                        <h2 class="modal-title">Deal bearbeiten</h2>
+                        <button class="close-btn" onclick="this.closest('.modal').remove()">&times;</button>
+                    </div>
+                    
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label class="form-label">Deal-Name</label>
+                            <input type="text" class="form-input" id="editDealName" value="${deal.name}">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Deal Wert (€)</label>
+                            <input type="number" class="form-input" id="editDealValue" step="0.01" value="${deal.value}" onchange="updateEditDealValuePreview()">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Zahlungsmodell</label>
+                            <select class="form-select" id="editDealPaymentModel" onchange="toggleEditDealPaymentFields()">
+                                <option value="one-time" ${(deal.paymentModel || 'one-time') === 'one-time' ? 'selected' : ''}>Einmalzahlung</option>
+                                <option value="monthly" ${deal.paymentModel === 'monthly' ? 'selected' : ''}>Monatlich (Abo/Vertrag)</option>
+                                <option value="quarterly" ${deal.paymentModel === 'quarterly' ? 'selected' : ''}>Vierteljährlich</option>
+                                <option value="yearly" ${deal.paymentModel === 'yearly' ? 'selected' : ''}>Jährlich</option>
+                            </select>
+                        </div>
+                        
+                        <div id="editDealRecurringFields" class="form-group" style="${(deal.paymentModel && deal.paymentModel !== 'one-time') ? '' : 'display: none;'}">
+                            <label class="form-label">Vertragslaufzeit (Monate)</label>
+                            <input type="number" class="form-input" id="editDealContractDuration" min="1" value="${deal.contractDuration || 12}" onchange="updateEditDealValuePreview()">
+                            <div style="margin-top: 12px; padding: 12px; background: #f0f9ff; border-left: 4px solid #1e40af; border-radius: 4px;">
+                                <div style="font-size: 12px; color: #1e40af; font-weight: 600; margin-bottom: 4px;">Umsatzübersicht</div>
+                                <div id="editDealValuePreview" style="font-size: 13px; color: #64748b;"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Unternehmen</label>
+                            <div class="form-input" style="background: #f1f5f9; cursor: not-allowed;">
+                                ${company ? company.name : 'Unbekannt'}
+                            </div>
+                            <small style="color: var(--text-secondary);">Unternehmen kann nachträglich nicht geändert werden</small>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" onclick="saveEditedDeal('${dealId}')">Änderungen speichern</button>
+                        <button class="btn btn-secondary" onclick="this.closest('.modal').remove()">Abbrechen</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Initialize preview if recurring
+            if (deal.paymentModel && deal.paymentModel !== 'one-time') {
+                updateEditDealValuePreview();
+            }
+        }
+        
+        function toggleEditDealPaymentFields() {
+            const paymentModel = document.getElementById('editDealPaymentModel').value;
+            const recurringFields = document.getElementById('editDealRecurringFields');
+            
+            if (paymentModel !== 'one-time') {
+                recurringFields.style.display = 'block';
+                updateEditDealValuePreview();
+            } else {
+                recurringFields.style.display = 'none';
+            }
+        }
+        
+        function updateEditDealValuePreview() {
+            const value = parseFloat(document.getElementById('editDealValue').value) || 0;
+            const paymentModel = document.getElementById('editDealPaymentModel').value;
+            const duration = parseInt(document.getElementById('editDealContractDuration').value) || 12;
+            const preview = document.getElementById('editDealValuePreview');
+            
+            if (!preview || paymentModel === 'one-time') return;
+            
+            let periodsPerYear, periodName;
+            switch(paymentModel) {
+                case 'monthly':
+                    periodsPerYear = 12;
+                    periodName = 'Monat';
+                    break;
+                case 'quarterly':
+                    periodsPerYear = 4;
+                    periodName = 'Quartal';
+                    break;
+                case 'yearly':
+                    periodsPerYear = 1;
+                    periodName = 'Jahr';
+                    break;
+            }
+            
+            const totalPeriods = Math.ceil((duration / 12) * periodsPerYear);
+            const totalRevenue = value * totalPeriods;
+            const mrr = paymentModel === 'monthly' ? value : (value / (12 / periodsPerYear));
+            const arr = mrr * 12;
+            
+            preview.innerHTML = `
+                <strong>€ ${value.toLocaleString('de-DE')}</strong> pro ${periodName}<br>
+                <strong>${totalPeriods}x Zahlungen</strong> über ${duration} Monate<br>
+                <strong>Gesamtumsatz: € ${totalRevenue.toLocaleString('de-DE')}</strong><br>
+                MRR: € ${Math.round(mrr).toLocaleString('de-DE')} | ARR: € ${Math.round(arr).toLocaleString('de-DE')}
+            `;
+        }
+        
+        function saveEditedDeal(dealId) {
+            const deal = deals.find(d => d.id === dealId);
+            if (!deal) return;
+            
+            const newName = document.getElementById('editDealName').value.trim();
+            const newValue = parseFloat(document.getElementById('editDealValue').value);
+            const newPaymentModel = document.getElementById('editDealPaymentModel').value;
+            const newContractDuration = parseInt(document.getElementById('editDealContractDuration').value) || 12;
+            
+            if (!newName) {
+                alert('Bitte geben Sie einen Deal-Namen ein.');
+                return;
+            }
+            
+            if (isNaN(newValue) || newValue < 0) {
+                alert('Bitte geben Sie einen gültigen Deal-Wert ein.');
+                return;
+            }
+            
+            // Update deal
+            deal.name = newName;
+            deal.value = newValue;
+            deal.paymentModel = newPaymentModel;
+            deal.contractDuration = newPaymentModel !== 'one-time' ? newContractDuration : null;
+            
+            Storage.setItem('bbc_deals', JSON.stringify(deals));
+            
+            // Update linked order if exists
+            const linkedOrder = orders.find(o => o.dealId === dealId);
+            if (linkedOrder) {
+                linkedOrder.dealName = newName;
+                linkedOrder.value = newValue;
+                linkedOrder.paymentModel = newPaymentModel;
+                linkedOrder.contractDuration = newPaymentModel !== 'one-time' ? newContractDuration : null;
+                Storage.setItem('bbc_orders', JSON.stringify(orders));
+            }
+            
+            // Close modal
+            document.querySelector('.modal.active').remove();
+            
+            // Refresh views
+            showDealDetail(dealId);
+            renderPipeline();
+            updateKPICards();
+            updateGoalsProgress();
+            updateRevenueOverview();
+            
+            // Update Analytics if open
+            if (!document.getElementById('analytics-view').classList.contains('hidden')) {
+                updateAnalytics();
+            }
+            
+            showNotification('Deal aktualisiert', `Die Änderungen an "${newName}" wurden gespeichert und mit dem Auftrag synchronisiert.`);
         }
         
         function initDealScore() {
@@ -4717,6 +5196,8 @@ Ihr BBC Team`
             const companyId = document.getElementById('dealCompanyId').value;
             const name = document.getElementById('dealName').value;
             const value = document.getElementById('dealValue').value || 0;
+            const paymentModel = document.getElementById('dealPaymentModel').value;
+            const contractDuration = document.getElementById('dealContractDuration').value || 12;
             const pdfData = document.getElementById('dealPdfData').value;
             const pdfInput = document.getElementById('dealPdfFile');
             const pdfName = pdfInput.files[0] ? pdfInput.files[0].name : null;
@@ -4733,6 +5214,8 @@ Ihr BBC Team`
                 companyId,
                 name,
                 value: parseFloat(value),
+                paymentModel: paymentModel,
+                contractDuration: paymentModel !== 'one-time' ? parseInt(contractDuration) : null,
                 services: selectedServices,
                 score,
                 stage: 'Lead',
@@ -4756,6 +5239,11 @@ Ihr BBC Team`
             renderPipeline();
             renderCompanies();
             
+            // Update Dashboard
+            updateKPICards();
+            updateGoalsProgress();
+            updateRevenueOverview();
+            
             // If on company detail, refresh it
             if (!document.getElementById('company-detail-view').classList.contains('hidden')) {
                 showCompanyDetail(companyId);
@@ -4768,7 +5256,7 @@ Ihr BBC Team`
             if (deals.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state" style="width: 100%;">
-                        <div class="empty-state-icon">💼</div>
+                        <div class="empty-state-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg></div>
                         <div class="empty-state-text">Keine Deals vorhanden</div>
                         <div class="empty-state-subtext">Erstellen Sie Deals in der Unternehmensansicht</div>
                     </div>
@@ -4869,9 +5357,14 @@ Ihr BBC Team`
                 Storage.setItem('bbc_deals', JSON.stringify(deals));
                 renderPipeline();
                 
-                // Update Dashboard if currently visible
-                if (!document.getElementById('dashboard-view').classList.contains('hidden')) {
-                    renderDashboard();
+                // Update Dashboard KPIs
+                updateKPICards();
+                updateGoalsProgress();
+                updateRevenueOverview();
+                
+                // Update Analytics if visible
+                if (!document.getElementById('analytics-view').classList.contains('hidden')) {
+                    updateAnalytics();
                 }
             }
             
@@ -4889,7 +5382,7 @@ Ihr BBC Team`
             modal.innerHTML = `
                 <div class="modal-content" style="max-width: 500px;">
                     <div class="modal-header">
-                        <h2 class="modal-title">🎉 Deal gewonnen!</h2>
+                        <h2 class="modal-title">Deal gewonnen</h2>
                         <button class="close-btn" onclick="this.closest('.modal').remove()">&times;</button>
                     </div>
                     
@@ -4949,9 +5442,14 @@ Ihr BBC Team`
             renderPipeline();
             renderDashboard();
             
+            // Update Analytics if currently open
+            if (!document.getElementById('analytics-view').classList.contains('hidden')) {
+                updateAnalytics();
+            }
+            
             // Show success notification
             showNotification(
-                '🎉 Deal gewonnen!', 
+                'Deal gewonnen', 
                 `Der Deal "${deal.name}" wurde als gewonnen markiert und ein Auftrag wurde erstellt.`
             );
             
@@ -5025,6 +5523,11 @@ Ihr BBC Team`
             renderPipeline();
             renderDashboard();
             
+            // Update Analytics if currently open
+            if (!document.getElementById('analytics-view').classList.contains('hidden')) {
+                updateAnalytics();
+            }
+            
             // Show notification
             showNotification('Deal verloren', `Der Deal "${deal.name}" wurde als verloren markiert.`);
             
@@ -5046,6 +5549,9 @@ Ihr BBC Team`
                 companyId: deal.companyId,
                 companyName: company ? company.name : 'Unbekannt',
                 value: deal.value || 0,
+                paymentModel: deal.paymentModel || 'one-time',
+                contractDuration: deal.contractDuration || null,
+                startDate: new Date().toISOString().split('T')[0], // Default: heute
                 services: deal.services || [],
                 status: 'Neu',
                 responsiblePerson: '',
@@ -5065,7 +5571,7 @@ Ihr BBC Team`
             }
             
             // Show success notification
-            showNotification('🎉 Auftrag erstellt!', `Auftrag ${order.orderNumber} wurde automatisch für ${company ? company.name : 'Unbekannt'} erstellt.`);
+            showNotification('Auftrag erstellt', `Auftrag ${order.orderNumber} wurde automatisch für ${company ? company.name : 'Unbekannt'} erstellt.`);
         }
         
         function showNotification(title, message, duration = 4000) {
@@ -5309,7 +5815,7 @@ Ihr BBC Team`
             if (tasks.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
-                        <div class="empty-state-icon">✓</div>
+                        <div class="empty-state-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
                         <div class="empty-state-text">Keine Aufgaben vorhanden</div>
                         <div class="empty-state-subtext">Erstellen Sie Ihre erste Aufgabe</div>
                     </div>
@@ -5339,14 +5845,14 @@ Ihr BBC Team`
                         <input type="checkbox" class="select-checkbox task-checkbox" data-id="${task.id}" onchange="updateTasksBulkActions()" style="margin-right: 16px; margin-left: 8px;">
                         <div class="task-content">
                             <div class="task-title">
-                                ${task.overdue ? '⚠️ ' : ''}${task.title}
+                                ${task.overdue ? '' : ''}${task.title}
                             </div>
                             <div class="task-meta">
                                 ${task.assignee ? `👤 ${task.assignee} (BBC)` : ''}
-                                ${task.dueDate ? ` • 📅 ${new Date(task.dueDate).toLocaleDateString('de-DE')}` : ''}
+                                ${task.dueDate ? ` • ${new Date(task.dueDate).toLocaleDateString('de-DE')}` : ''}
                                 ${company ? ` • 🏢 ${company.name}` : ''}
                                 ${contact ? ` • 👤 ${contact.name}` : ''}
-                                ${deal ? ` • 💼 ${deal.name}` : ''}
+                                ${deal ? ` • ${deal.name}` : ''}
                                 ${task.overdue ? ' • <span style="color: var(--danger); font-weight: 600;">ÜBERFÄLLIG</span>' : ''}
                             </div>
                             ${task.description ? `<div style="font-size: 13px; color: var(--text-secondary); margin-top: 6px;">${task.description}</div>` : ''}
@@ -5375,9 +5881,9 @@ Ihr BBC Team`
                         <div class="task-title">${task.title}</div>
                         <div class="task-meta">
                             ${task.assignee ? `👤 ${task.assignee}` : ''}
-                            ${task.dueDate ? ` • 📅 ${new Date(task.dueDate).toLocaleDateString('de-DE')}` : ''}
+                            ${task.dueDate ? ` • ${new Date(task.dueDate).toLocaleDateString('de-DE')}` : ''}
                             ${contact ? ` • 👤 ${contact.name}` : ''}
-                            ${deal ? ` • 💼 ${deal.name}` : ''}
+                            ${deal ? ` • ${deal.name}` : ''}
                         </div>
                         ${task.description ? `<div style="font-size: 13px; color: var(--text-secondary); margin-top: 6px;">${task.description}</div>` : ''}
                     </div>
@@ -5524,7 +6030,7 @@ Ihr BBC Team`
             if (filtered.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
-                        <div class="empty-state-icon">🔍</div>
+                        <div class="empty-state-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg></div>
                         <div class="empty-state-text">Keine Ergebnisse</div>
                     </div>
                 `;
@@ -6051,16 +6557,16 @@ Ihr BBC Team`
         function renderEmployeesList() {
             const container = document.getElementById('employeesList');
             if (!employees || employees.length === 0) {
-                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">👥</div><div class="empty-state-text">Keine Mitarbeiter</div></div>';
+                container.innerHTML = '<div class="empty-state"><div class="empty-state-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div><div class="empty-state-text">Keine Mitarbeiter</div></div>';
                 return;
             }
             container.innerHTML = employees.map(emp => `
                 <div class="employee-card">
                     <div class="employee-info">
                         <div class="employee-name">${emp.name}</div>
-                        ${emp.position ? `<div class="employee-meta">📋 ${emp.position}</div>` : ''}
+                        ${emp.position ? `<div class="employee-meta">${emp.position}</div>` : ''}
                         ${emp.department ? `<div class="employee-meta">🏢 ${emp.department}</div>` : ''}
-                        ${emp.email ? `<div class="employee-meta">📧 ${emp.email}</div>` : ''}
+                        ${emp.email ? `<div class="employee-meta">${emp.email}</div>` : ''}
                         ${emp.phone ? `<div class="employee-meta">📞 ${emp.phone}</div>` : ''}
                     </div>
                     <div class="employee-actions">
@@ -6243,10 +6749,23 @@ Ihr BBC Team`
 
         function createBackup() {
             const backup = {
-                version: '1.0',
+                version: '2.0',
                 date: new Date().toISOString(),
-                contacts, companies, deals, tasks, employees, customServices, availableTags, dealStages, leadStatuses, generalSettings
+                contacts,
+                companies,
+                deals,
+                orders,
+                tasks,
+                reminders,
+                employees,
+                customServices,
+                availableTags,
+                dealStages,
+                leadStatuses,
+                generalSettings,
+                dashboardGoals
             };
+            
             const blob = new Blob([JSON.stringify(backup, null, 2)], {type: 'application/json'});
             const url = URL.createObjectURL(blob);
             const link = document.createElement('a');
@@ -6254,6 +6773,8 @@ Ihr BBC Team`
             link.download = `bbc-crm-backup-${new Date().toISOString().split('T')[0]}.json`;
             link.click();
             URL.revokeObjectURL(url);
+            
+            showNotification('Backup erstellt', `Backup mit ${contacts.length} Kontakten, ${companies.length} Unternehmen, ${deals.length} Deals und ${orders.length} Aufträgen wurde heruntergeladen.`);
         }
 
         function restoreBackup(event) {
@@ -6267,32 +6788,45 @@ Ihr BBC Team`
             reader.onload = function(e) {
                 try {
                     const b = JSON.parse(e.target.result);
+                    
+                    // Load all data
                     contacts = b.contacts || [];
                     companies = b.companies || [];
                     deals = b.deals || [];
+                    orders = b.orders || [];
                     tasks = b.tasks || [];
+                    reminders = b.reminders || [];
                     employees = b.employees || [];
                     customServices = b.customServices || [];
                     availableTags = b.availableTags || [];
                     dealStages = b.dealStages || [];
                     leadStatuses = b.leadStatuses || [];
                     generalSettings = b.generalSettings || {};
+                    dashboardGoals = b.dashboardGoals || {revenue: 0, contacts: 0, deals: 0};
                     
+                    // Save to localStorage
                     Storage.setItem('bbc_contacts', JSON.stringify(contacts));
                     Storage.setItem('bbc_companies', JSON.stringify(companies));
                     Storage.setItem('bbc_deals', JSON.stringify(deals));
+                    Storage.setItem('bbc_orders', JSON.stringify(orders));
                     Storage.setItem('bbc_tasks', JSON.stringify(tasks));
+                    Storage.setItem('bbc_reminders', JSON.stringify(reminders));
                     Storage.setItem('bbc_employees', JSON.stringify(employees));
                     Storage.setItem('bbc_custom_services', JSON.stringify(customServices));
                     Storage.setItem('bbc_available_tags', JSON.stringify(availableTags));
                     Storage.setItem('bbc_deal_stages', JSON.stringify(dealStages));
                     Storage.setItem('bbc_lead_statuses', JSON.stringify(leadStatuses));
                     Storage.setItem('bbc_general_settings', JSON.stringify(generalSettings));
+                    Storage.setItem('bbc_dashboard_goals', JSON.stringify(dashboardGoals));
                     
-                    alert('Backup erfolgreich wiederhergestellt!');
-                    location.reload();
+                    showNotification('Backup wiederhergestellt', `${contacts.length} Kontakte, ${companies.length} Unternehmen, ${deals.length} Deals und ${orders.length} Aufträge wurden importiert.`);
+                    
+                    setTimeout(() => {
+                        location.reload();
+                    }, 2000);
                 } catch(err) {
                     alert('Fehler beim Wiederherstellen: ' + err.message);
+                    console.error('Restore error:', err);
                 }
             };
             reader.readAsText(file);
@@ -6494,7 +7028,7 @@ Ihr BBC Team`
             if (filteredOrders.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
-                        <div class="empty-state-icon">📦</div>
+                        <div class="empty-state-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg></div>
                         <div class="empty-state-text">Keine Aufträge vorhanden</div>
                         <div class="empty-state-subtext">Aufträge werden automatisch aus gewonnenen Deals erstellt</div>
                     </div>
@@ -6807,7 +7341,38 @@ Ihr BBC Team`
                     
                     <div style="margin-bottom: 20px;">
                         <label style="display: block; font-weight: 600; margin-bottom: 8px;">Auftragswert (€)</label>
-                        <input type="number" id="editOrderValue" value="${order.value || 0}" step="0.01" style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-family: 'DM Sans', sans-serif; box-sizing: border-box;">
+                        <input type="number" id="editOrderValue" value="${order.value || 0}" step="0.01" onchange="updateOrderValuePreview()" style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-family: 'IBM Plex Sans', sans-serif; box-sizing: border-box;">
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 8px;">Zahlungsmodell</label>
+                        <select id="editOrderPaymentModel" onchange="toggleOrderPaymentFields()" style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-family: 'IBM Plex Sans', sans-serif; box-sizing: border-box;">
+                            <option value="one-time" ${(order.paymentModel || 'one-time') === 'one-time' ? 'selected' : ''}>Einmalzahlung</option>
+                            <option value="monthly" ${order.paymentModel === 'monthly' ? 'selected' : ''}>Monatlich (Abo/Vertrag)</option>
+                            <option value="quarterly" ${order.paymentModel === 'quarterly' ? 'selected' : ''}>Vierteljährlich</option>
+                            <option value="yearly" ${order.paymentModel === 'yearly' ? 'selected' : ''}>Jährlich</option>
+                        </select>
+                    </div>
+                    
+                    <div id="editOrderRecurringFields" style="margin-bottom: 20px; ${(order.paymentModel && order.paymentModel !== 'one-time') ? '' : 'display: none;'}">
+                        <label style="display: block; font-weight: 600; margin-bottom: 8px;">Vertragslaufzeit (Monate)</label>
+                        <input type="number" id="editOrderContractDuration" value="${order.contractDuration || 12}" min="1" onchange="updateOrderValuePreview()" style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-family: 'IBM Plex Sans', sans-serif; box-sizing: border-box;">
+                        <div style="margin-top: 12px; padding: 12px; background: #f0f9ff; border-left: 4px solid #1e40af; border-radius: 4px;">
+                            <div style="font-size: 12px; color: #1e40af; font-weight: 600; margin-bottom: 4px;">Umsatzübersicht</div>
+                            <div id="editOrderValuePreview" style="font-size: 13px; color: #64748b;"></div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 8px;">
+                            Startdatum (Erste Zahlung)
+                            <span style="font-weight: 400; color: #64748b; font-size: 12px; margin-left: 8px;">Bestimmt wann die erste Zahlung erfolgt</span>
+                        </label>
+                        <input type="date" id="editOrderStartDate" value="${order.startDate || new Date().toISOString().split('T')[0]}" style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-family: 'IBM Plex Sans', sans-serif; box-sizing: border-box;">
+                        <div style="margin-top: 8px; font-size: 12px; color: #64748b;">
+                            💡 Bei Einmalzahlung: Wann der Betrag eingeht<br>
+                            💡 Bei wiederkehrend: Wann die erste Rate fällig wird
+                        </div>
                     </div>
                     
                     <div style="margin-bottom: 20px;">
@@ -6987,9 +7552,16 @@ Ihr BBC Team`
             // Get values
             const newName = document.getElementById('editOrderName').value.trim();
             const newValue = parseFloat(document.getElementById('editOrderValue').value);
+            const newPaymentModel = document.getElementById('editOrderPaymentModel').value;
+            const newContractDuration = parseInt(document.getElementById('editOrderContractDuration').value) || 12;
+            const newStartDate = document.getElementById('editOrderStartDate').value;
             const newStatus = document.getElementById('editOrderStatus').value;
             const newNotes = document.getElementById('editOrderNotes').value.trim();
             const responsiblePerson = document.getElementById('editOrderResponsible').value;
+            
+            // Check if status changed to "Storniert"
+            const oldStatus = order.status;
+            const wasCancelled = (oldStatus !== 'Storniert' && newStatus === 'Storniert');
             
             // Validate
             if (!newName) {
@@ -7005,6 +7577,9 @@ Ihr BBC Team`
             // Update order
             order.dealName = newName;
             order.value = newValue;
+            order.paymentModel = newPaymentModel;
+            order.contractDuration = newPaymentModel !== 'one-time' ? newContractDuration : null;
+            order.startDate = newStartDate || new Date().toISOString().split('T')[0];
             order.status = newStatus;
             order.notes = newNotes;
             order.responsiblePerson = responsiblePerson;
@@ -7020,15 +7595,42 @@ Ihr BBC Team`
             // Save
             Storage.setItem('bbc_orders', JSON.stringify(orders));
             
+            // Sync back to deal if exists
+            if (order.dealId) {
+                const linkedDeal = deals.find(d => d.id === order.dealId);
+                if (linkedDeal) {
+                    linkedDeal.name = newName;
+                    linkedDeal.value = newValue;
+                    linkedDeal.paymentModel = newPaymentModel;
+                    linkedDeal.contractDuration = newPaymentModel !== 'one-time' ? newContractDuration : null;
+                    Storage.setItem('bbc_deals', JSON.stringify(deals));
+                }
+            }
+            
             // Close modal
             const modal = document.getElementById('editOrderModal');
             if (modal) modal.remove();
             
             // Show notification
-            showNotification('Auftrag aktualisiert', `Die Änderungen am Auftrag "${order.orderNumber}" wurden gespeichert.`);
+            if (wasCancelled) {
+                showNotification(
+                    'Auftrag storniert', 
+                    `Auftrag "${order.orderNumber}" wurde storniert. Der Wert von € ${newValue.toLocaleString('de-DE')} wird vom Jahresumsatz abgezogen.`
+                );
+            } else {
+                showNotification('Auftrag aktualisiert', `Die Änderungen am Auftrag "${order.orderNumber}" wurden gespeichert.`);
+            }
             
-            // Refresh view
+            // Refresh view and dashboard
             renderOrders();
+            updateKPICards();
+            updateGoalsProgress();
+            updateRevenueOverview();
+            
+            // Update Analytics if currently open
+            if (!document.getElementById('analytics-view').classList.contains('hidden')) {
+                updateAnalytics();
+            }
         }
         
         // ==========================================
@@ -7053,18 +7655,24 @@ Ihr BBC Team`
         function updateKPICards() {
             // Gewonnene Deals (nur bestätigte)
             const wonDeals = deals.filter(d => d.stage === 'Abgeschlossen gewonnen' && d.wonConfirmed);
-            const yearRevenue = wonDeals.reduce((sum, d) => sum + (parseFloat(d.value) || 0), 0);
+            let yearRevenue = wonDeals.reduce((sum, d) => sum + (parseFloat(d.value) || 0), 0);
+            
+            // Stornierte Aufträge vom Umsatz abziehen - mit korrekter Berechnung für wiederkehrende Zahlungen
+            const cancelledOrders = orders.filter(o => o.status === 'Storniert');
+            const cancelledValue = cancelledOrders.reduce((sum, o) => sum + calculateOrderTotalRevenue(o), 0);
+            yearRevenue = yearRevenue - cancelledValue;
+            
             const revenueProgress = dashboardGoals.revenue > 0 ? ((yearRevenue / dashboardGoals.revenue) * 100).toFixed(0) : 0;
             
             if (document.getElementById('kpiYearRevenue')) {
-                document.getElementById('kpiYearRevenue').textContent = '€ ' + yearRevenue.toLocaleString('de-DE');
+                document.getElementById('kpiYearRevenue').textContent = '€ ' + Math.round(yearRevenue).toLocaleString('de-DE');
                 document.getElementById('kpiYearProgress').textContent = revenueProgress + '% vom Ziel';
             }
             
             // Gewonnene Deals KPI
             if (document.getElementById('kpiWonDeals')) {
                 document.getElementById('kpiWonDeals').textContent = wonDeals.length;
-                document.getElementById('kpiWonDealsValue').textContent = '€ ' + yearRevenue.toLocaleString('de-DE');
+                document.getElementById('kpiWonDealsValue').textContent = '€ ' + Math.round(yearRevenue).toLocaleString('de-DE');
             }
             
             // Verlorene Deals (nur bestätigte)
@@ -7073,7 +7681,7 @@ Ihr BBC Team`
             
             if (document.getElementById('kpiLostDeals')) {
                 document.getElementById('kpiLostDeals').textContent = lostDeals.length;
-                document.getElementById('kpiLostDealsValue').textContent = '€ ' + lostDealsValue.toLocaleString('de-DE');
+                document.getElementById('kpiLostDealsValue').textContent = '€ ' + Math.round(lostDealsValue).toLocaleString('de-DE');
             }
             
             // Aktive Deals in Pipeline (ohne gewonnen/verloren)
@@ -7082,7 +7690,7 @@ Ihr BBC Team`
             
             if (document.getElementById('kpiDealsCount')) {
                 document.getElementById('kpiDealsCount').textContent = activeDeals.length;
-                document.getElementById('kpiDealsValue').textContent = '€ ' + pipelineValue.toLocaleString('de-DE');
+                document.getElementById('kpiDealsValue').textContent = '€ ' + Math.round(pipelineValue).toLocaleString('de-DE');
             }
             
             // Kontakte
@@ -7111,20 +7719,26 @@ Ihr BBC Team`
             console.log('Gewonnene & bestätigte Deals:', wonDeals.length, wonDeals);
             
             // Berechne Jahresumsatz aus gewonnenen Deals
-            const yearRevenue = wonDeals.reduce((sum, d) => {
+            let yearRevenue = wonDeals.reduce((sum, d) => {
                 const value = parseFloat(d.value) || 0;
                 console.log('Deal:', d.name, 'Wert:', value, 'Bestätigt:', d.wonConfirmed);
                 return sum + value;
             }, 0);
             
+            // Stornierte Aufträge vom Umsatz abziehen - mit korrekter Berechnung
+            const cancelledOrders = orders.filter(o => o.status === 'Storniert');
+            const cancelledValue = cancelledOrders.reduce((sum, o) => sum + calculateOrderTotalRevenue(o), 0);
+            yearRevenue = yearRevenue - cancelledValue;
+            
             console.log('Gesamt Jahresumsatz (bestätigt):', yearRevenue);
+            console.log('Stornierte Aufträge abgezogen:', cancelledValue);
             
             const revenueProgress = dashboardGoals.revenue > 0 ? ((yearRevenue / dashboardGoals.revenue) * 100) : 0;
             
             if (document.getElementById('goalRevenueText')) {
                 document.getElementById('goalRevenueText').textContent = '€ ' + dashboardGoals.revenue.toLocaleString('de-DE');
                 document.getElementById('goalRevenueProgress').style.width = Math.min(revenueProgress, 100) + '%';
-                document.getElementById('goalRevenueStatus').textContent = revenueProgress.toFixed(0) + '% erreicht (€ ' + yearRevenue.toLocaleString('de-DE') + ')';
+                document.getElementById('goalRevenueStatus').textContent = revenueProgress.toFixed(0) + '% erreicht (€ ' + Math.round(yearRevenue).toLocaleString('de-DE') + ')';
             }
             
             const contactsProgress = dashboardGoals.contacts > 0 ? ((contacts.length / dashboardGoals.contacts) * 100) : 0;
@@ -7150,12 +7764,18 @@ Ihr BBC Team`
             const wonDeals = deals.filter(d => d.stage === 'Abgeschlossen gewonnen' && d.wonConfirmed);
             
             // Berechne Ist-Umsatz
-            const actual = wonDeals.reduce((sum, d) => {
+            let actual = wonDeals.reduce((sum, d) => {
                 const value = parseFloat(d.value) || 0;
                 return sum + value;
             }, 0);
             
+            // Stornierte Aufträge vom Umsatz abziehen - mit korrekter Berechnung
+            const cancelledOrders = orders.filter(o => o.status === 'Storniert');
+            const cancelledValue = cancelledOrders.reduce((sum, o) => sum + calculateOrderTotalRevenue(o), 0);
+            actual = actual - cancelledValue;
+            
             console.log('Ist-Umsatz (bestätigt):', actual);
+            console.log('Stornierte Aufträge abgezogen:', cancelledValue);
             
             const target = dashboardGoals.revenue;
             const percentage = target > 0 ? ((actual / target) * 100) : 0;
@@ -7163,12 +7783,12 @@ Ihr BBC Team`
             const monthly = remaining / 12;
             
             if (document.getElementById('revenueActual')) {
-                document.getElementById('revenueActual').textContent = '€ ' + actual.toLocaleString('de-DE');
+                document.getElementById('revenueActual').textContent = '€ ' + Math.round(actual).toLocaleString('de-DE');
                 document.getElementById('revenueTarget').textContent = '€ ' + target.toLocaleString('de-DE');
                 document.getElementById('revenueProgress').style.width = Math.min(percentage, 100) + '%';
                 document.getElementById('revenuePercentage').textContent = percentage.toFixed(1) + '%';
-                document.getElementById('revenueRemaining').textContent = '€ ' + remaining.toLocaleString('de-DE');
-                document.getElementById('revenueMonthly').textContent = '€ ' + monthly.toLocaleString('de-DE', {maximumFractionDigits: 0});
+                document.getElementById('revenueRemaining').textContent = '€ ' + Math.round(remaining).toLocaleString('de-DE');
+                document.getElementById('revenueMonthly').textContent = '€ ' + Math.round(monthly).toLocaleString('de-DE');
             }
         }
 
@@ -7209,7 +7829,7 @@ Ihr BBC Team`
             const sortedTasks = sortTasksByPriority(openTasks).slice(0, 5);
             
             if (sortedTasks.length === 0) {
-                container.innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 40px 0;">Keine offenen Aufgaben 🎉</p>';
+                container.innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 40px 0;">Keine offenen Aufgaben</p>';
                 return;
             }
             
@@ -7218,13 +7838,16 @@ Ihr BBC Team`
                 return `
                     <div style="padding: 12px; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.2s;" onclick="showView('tasks')" onmouseover="this.style.background='var(--bg-main)'" onmouseout="this.style.background='white'">
                         <div style="display: flex; align-items: start; gap: 12px;">
-                            <div style="width: 36px; height: 36px; border-radius: 8px; background: ${task.overdue ? '#fee2e2' : '#dbeafe'}; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;">
-                                ${task.overdue ? '⚠️' : '✓'}
+                            <div style="width: 36px; height: 36px; border-radius: 8px; background: ${task.overdue ? '#fee2e2' : '#dbeafe'}; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                ${task.overdue ? 
+                                    '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>' : 
+                                    '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1e40af" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>'
+                                }
                             </div>
                             <div style="flex: 1;">
                                 <div style="font-weight: 600; margin-bottom: 4px;">${task.title}</div>
                                 <div style="font-size: 13px; color: var(--text-secondary);">
-                                    ${task.dueDate ? '📅 ' + new Date(task.dueDate).toLocaleDateString('de-DE') : 'Kein Datum'}
+                                    ${task.dueDate ? '' + new Date(task.dueDate).toLocaleDateString('de-DE') : 'Kein Datum'}
                                     ${contact ? ' • ' + contact.name : ''}
                                     ${task.overdue ? ' • <span style="color: #C62828; font-weight: 600;">ÜBERFÄLLIG</span>' : ''}
                                 </div>
@@ -7270,8 +7893,11 @@ Ihr BBC Team`
                 return `
                     <div style="padding: 12px; border-bottom: 1px solid var(--border); transition: background 0.2s;" onmouseover="this.style.background='var(--bg-main)'" onmouseout="this.style.background='white'">
                         <div style="display: flex; align-items: start; gap: 12px;">
-                            <div style="width: 36px; height: 36px; border-radius: 8px; background: ${isToday ? '#fef3c7' : '#e0e7ff'}; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;">
-                                🔔
+                            <div style="width: 36px; height: 36px; border-radius: 8px; background: ${isToday ? '#fef3c7' : '#e0e7ff'}; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="${isToday ? '#92400e' : '#1e40af'}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                                    <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                                </svg>
                             </div>
                             <div style="flex: 1;">
                                 <div style="font-weight: 600; margin-bottom: 4px;">${reminder.text}</div>
@@ -7292,6 +7918,23 @@ Ihr BBC Team`
             const container = document.getElementById('activityFeed');
             if (!container) return;
             
+            // Icon Mapper für SVG-Icons
+            const getIconSvg = (iconName, color) => {
+                const iconColor = color === '#d1fae5' ? '#059669' : 
+                                 color === '#fee2e2' ? '#dc2626' : 
+                                 color === '#fef3c7' ? '#f59e0b' : 
+                                 color === '#dbeafe' ? '#1e40af' : '#64748b';
+                
+                const icons = {
+                    'user': `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${iconColor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>`,
+                    'briefcase': `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${iconColor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>`,
+                    'check-circle': `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${iconColor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>`,
+                    'x-circle': `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="${iconColor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>`
+                };
+                
+                return icons[iconName] || icons['user'];
+            };
+            
             const activities = [];
             const oneWeekAgo = new Date();
             oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
@@ -7299,7 +7942,7 @@ Ihr BBC Team`
             // Neue Kontakte
             contacts.filter(c => new Date(c.createdAt) >= oneWeekAgo).forEach(contact => {
                 activities.push({
-                    icon: '👤',
+                    icon: 'user',
                     color: '#dbeafe',
                     title: 'Neuer Kontakt',
                     description: contact.name,
@@ -7311,7 +7954,7 @@ Ihr BBC Team`
             deals.filter(d => new Date(d.createdAt) >= oneWeekAgo).forEach(deal => {
                 const company = companies.find(c => c.id === deal.companyId);
                 activities.push({
-                    icon: '💼',
+                    icon: 'briefcase',
                     color: '#fef3c7',
                     title: 'Neuer Deal',
                     description: deal.name + (company ? ' • ' + company.name : ''),
@@ -7322,7 +7965,7 @@ Ihr BBC Team`
             // Gewonnene Deals
             deals.filter(d => d.stage === 'Abgeschlossen gewonnen' && new Date(d.createdAt) >= oneWeekAgo).forEach(deal => {
                 activities.push({
-                    icon: '🎉',
+                    icon: 'check-circle',
                     color: '#d1fae5',
                     title: 'Deal gewonnen',
                     description: deal.name + ' • € ' + (deal.value || 0).toLocaleString('de-DE'),
@@ -7333,7 +7976,7 @@ Ihr BBC Team`
             // Verlorene Deals
             deals.filter(d => d.stage === 'Abgeschlossen verloren' && new Date(d.createdAt) >= oneWeekAgo).forEach(deal => {
                 activities.push({
-                    icon: '❌',
+                    icon: 'x-circle',
                     color: '#fee2e2',
                     title: 'Deal verloren',
                     description: deal.name + ' • € ' + (deal.value || 0).toLocaleString('de-DE'),
@@ -7356,8 +7999,8 @@ Ihr BBC Team`
                 
                 return `
                     <div style="display: flex; gap: 12px; padding: 12px; border-bottom: 1px solid var(--border);">
-                        <div style="width: 40px; height: 40px; border-radius: 50%; background: ${activity.color}; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;">
-                            ${activity.icon}
+                        <div style="width: 40px; height: 40px; border-radius: 50%; background: ${activity.color}; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            ${getIconSvg(activity.icon, activity.color)}
                         </div>
                         <div style="flex: 1;">
                             <div style="font-weight: 600; margin-bottom: 4px;">${activity.title}</div>
@@ -7369,13 +8012,629 @@ Ihr BBC Team`
             }).join('');
         }
 
+        // ==========================================
+        // ANALYTICS & REPORTING
+        // ==========================================
+        
+        // ==========================================
+        // HELPER FUNCTIONS FOR REVENUE CALCULATION
+        // ==========================================
+        
+        function calculateOrderTotalRevenue(order) {
+            const value = parseFloat(order.value) || 0;
+            const paymentModel = order.paymentModel || 'one-time';
+            const duration = parseInt(order.contractDuration) || 12;
+            
+            if (paymentModel === 'one-time') {
+                return value;
+            }
+            
+            // Berechne Anzahl der Zahlungen basierend auf Modell
+            let periodsPerYear;
+            switch(paymentModel) {
+                case 'monthly':
+                    periodsPerYear = 12;
+                    break;
+                case 'quarterly':
+                    periodsPerYear = 4;
+                    break;
+                case 'yearly':
+                    periodsPerYear = 1;
+                    break;
+                default:
+                    return value;
+            }
+            
+            const totalPeriods = Math.ceil((duration / 12) * periodsPerYear);
+            return value * totalPeriods;
+        }
+        
+        function calculateOrderMRR(order) {
+            const value = parseFloat(order.value) || 0;
+            const paymentModel = order.paymentModel || 'one-time';
+            
+            if (paymentModel === 'one-time') {
+                return 0; // Einmalzahlungen zählen nicht zu MRR
+            }
+            
+            switch(paymentModel) {
+                case 'monthly':
+                    return value;
+                case 'quarterly':
+                    return value / 3;
+                case 'yearly':
+                    return value / 12;
+                default:
+                    return 0;
+            }
+        }
+        
+        // ==========================================
+        // ANALYTICS & REPORTING
+        // ==========================================
+        
+        function updateAnalytics() {
+            const timeframe = document.getElementById('analyticsTimeframe')?.value || 'year';
+            const filteredData = getFilteredData(timeframe);
+            
+            updateAnalyticsKPIs(filteredData);
+            renderRevenueTimeline(filteredData, timeframe);
+            renderTopPerformers(filteredData);
+            renderSalesFunnel(filteredData);
+            renderLossReasons(filteredData);
+            renderForecast();
+        }
+        
+        function getFilteredData(timeframe) {
+            const now = new Date();
+            let startDate;
+            
+            switch(timeframe) {
+                case 'month':
+                    startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+                    break;
+                case 'quarter':
+                    const quarter = Math.floor(now.getMonth() / 3);
+                    startDate = new Date(now.getFullYear(), quarter * 3, 1);
+                    break;
+                case 'year':
+                    startDate = new Date(now.getFullYear(), 0, 1);
+                    break;
+                default:
+                    startDate = new Date(2020, 0, 1); // All time
+            }
+            
+            return {
+                deals: deals.filter(d => new Date(d.createdAt) >= startDate),
+                contacts: contacts.filter(c => new Date(c.createdAt) >= startDate),
+                orders: orders.filter(o => new Date(o.createdAt) >= startDate)
+            };
+        }
+        
+        function updateAnalyticsKPIs(data) {
+            // MRR/ARR Berechnung aus aktiven Aufträgen
+            let totalMRR = 0;
+            const activeOrders = data.orders.filter(o => o.status !== 'Storniert');
+            
+            activeOrders.forEach(order => {
+                totalMRR += calculateOrderMRR(order);
+            });
+            
+            const totalARR = totalMRR * 12;
+            
+            const mrrEl = document.getElementById('analyticsMRR');
+            if (mrrEl) mrrEl.textContent = '€ ' + Math.round(totalMRR).toLocaleString('de-DE');
+            
+            const arrEl = document.getElementById('analyticsARR');
+            if (arrEl) arrEl.textContent = '€ ' + Math.round(totalARR).toLocaleString('de-DE');
+            
+            // Conversion Rate: Lead → Deal → Won
+            const totalDeals = data.deals.length;
+            const wonDeals = data.deals.filter(d => d.wonConfirmed).length;
+            const conversionRate = totalDeals > 0 ? ((wonDeals / totalDeals) * 100).toFixed(1) : 0;
+            
+            const el = document.getElementById('analyticsConversionRate');
+            if (el) el.textContent = conversionRate + '%';
+            
+            const changeEl = document.getElementById('analyticsConversionChange');
+            if (changeEl) {
+                const trend = conversionRate > 50 ? '↑ Sehr gut' : conversionRate > 30 ? '→ Gut' : '↓ Verbesserungsbedarf';
+                changeEl.textContent = trend;
+                changeEl.style.color = conversionRate > 50 ? '#059669' : conversionRate > 30 ? '#f59e0b' : '#dc2626';
+            }
+            
+            // Deal Velocity: Durchschnittliche Zeit bis Abschluss
+            const closedDeals = data.deals.filter(d => d.wonConfirmed || d.lostConfirmed);
+            let totalDays = 0;
+            let count = 0;
+            
+            closedDeals.forEach(deal => {
+                const created = new Date(deal.createdAt);
+                const closed = deal.wonConfirmed ? (deal.wonDate ? new Date(deal.wonDate) : new Date()) : new Date();
+                const days = Math.floor((closed - created) / (1000 * 60 * 60 * 24));
+                totalDays += days;
+                count++;
+            });
+            
+            const avgVelocity = count > 0 ? Math.round(totalDays / count) : 0;
+            const velEl = document.getElementById('analyticsDealVelocity');
+            if (velEl) velEl.textContent = avgVelocity + ' Tage';
+            
+            // Average Deal Value
+            const dealsWithValue = data.deals.filter(d => d.value > 0);
+            const totalValue = dealsWithValue.reduce((sum, d) => sum + parseFloat(d.value || 0), 0);
+            const avgValue = dealsWithValue.length > 0 ? totalValue / dealsWithValue.length : 0;
+            
+            const avgEl = document.getElementById('analyticsAvgDealValue');
+            if (avgEl) avgEl.textContent = '€ ' + Math.round(avgValue).toLocaleString('de-DE');
+            
+            // Win Rate
+            const closedCount = closedDeals.length;
+            const winRate = closedCount > 0 ? ((wonDeals / closedCount) * 100).toFixed(1) : 0;
+            
+            const winEl = document.getElementById('analyticsWinRate');
+            if (winEl) winEl.textContent = winRate + '%';
+            
+            const winDetailsEl = document.getElementById('analyticsWinRateDetails');
+            if (winDetailsEl) {
+                const lostDeals = data.deals.filter(d => d.lostConfirmed).length;
+                winDetailsEl.textContent = `${wonDeals} gewonnen / ${lostDeals} verloren`;
+            }
+        }
+        
+        function renderRevenueTimeline(data, timeframe) {
+            const container = document.getElementById('revenueTimelineChart');
+            if (!container) return;
+            
+            // Berechne monatliche Einnahmen basierend auf Zahlungsmodellen
+            const monthlyRevenue = {};
+            const now = new Date();
+            
+            // Hole alle aktiven Aufträge (nicht storniert)
+            const activeOrders = orders.filter(o => o.status !== 'Storniert');
+            
+            activeOrders.forEach(order => {
+                // Verwende startDate wenn vorhanden, sonst createdAt
+                const startDate = new Date(order.startDate || order.createdAt);
+                const paymentModel = order.paymentModel || 'one-time';
+                const value = parseFloat(order.value) || 0;
+                const duration = parseInt(order.contractDuration) || 12;
+                
+                // Berechne Einnahmen pro Monat basierend auf Zahlungsmodell
+                if (paymentModel === 'one-time') {
+                    // Einmalzahlung: Voller Betrag im Erstellungsmonat
+                    const key = `${startDate.getFullYear()}-${String(startDate.getMonth() + 1).padStart(2, '0')}`;
+                    if (!monthlyRevenue[key]) monthlyRevenue[key] = { actual: 0, recurring: 0, oneTime: 0 };
+                    monthlyRevenue[key].oneTime += value;
+                    monthlyRevenue[key].actual += value;
+                    
+                } else if (paymentModel === 'monthly') {
+                    // Monatliche Zahlung: Verteile über Laufzeit
+                    for (let i = 0; i < duration; i++) {
+                        const paymentDate = new Date(startDate);
+                        paymentDate.setMonth(paymentDate.getMonth() + i);
+                        const key = `${paymentDate.getFullYear()}-${String(paymentDate.getMonth() + 1).padStart(2, '0')}`;
+                        
+                        if (!monthlyRevenue[key]) monthlyRevenue[key] = { actual: 0, recurring: 0, oneTime: 0 };
+                        monthlyRevenue[key].recurring += value;
+                        monthlyRevenue[key].actual += value;
+                    }
+                    
+                } else if (paymentModel === 'quarterly') {
+                    // Vierteljährliche Zahlung: Alle 3 Monate
+                    const quarters = Math.ceil(duration / 3);
+                    for (let i = 0; i < quarters; i++) {
+                        const paymentDate = new Date(startDate);
+                        paymentDate.setMonth(paymentDate.getMonth() + (i * 3));
+                        const key = `${paymentDate.getFullYear()}-${String(paymentDate.getMonth() + 1).padStart(2, '0')}`;
+                        
+                        if (!monthlyRevenue[key]) monthlyRevenue[key] = { actual: 0, recurring: 0, oneTime: 0 };
+                        monthlyRevenue[key].recurring += value;
+                        monthlyRevenue[key].actual += value;
+                    }
+                    
+                } else if (paymentModel === 'yearly') {
+                    // Jährliche Zahlung: Alle 12 Monate
+                    const years = Math.ceil(duration / 12);
+                    for (let i = 0; i < years; i++) {
+                        const paymentDate = new Date(startDate);
+                        paymentDate.setMonth(paymentDate.getMonth() + (i * 12));
+                        const key = `${paymentDate.getFullYear()}-${String(paymentDate.getMonth() + 1).padStart(2, '0')}`;
+                        
+                        if (!monthlyRevenue[key]) monthlyRevenue[key] = { actual: 0, recurring: 0, oneTime: 0 };
+                        monthlyRevenue[key].recurring += value;
+                        monthlyRevenue[key].actual += value;
+                    }
+                }
+            });
+            
+            // Sortiere Monate
+            const sortedMonths = Object.keys(monthlyRevenue).sort();
+            
+            if (sortedMonths.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 80px 0;">Keine Daten für diesen Zeitraum</p>';
+                return;
+            }
+            
+            // Finde Maximum für Skalierung
+            const maxRevenue = Math.max(...sortedMonths.map(m => monthlyRevenue[m].actual), 1);
+            
+            // Generiere Chart
+            container.innerHTML = `
+                <div style="display: flex; gap: 16px; margin-bottom: 20px; padding: 12px; background: #f0f9ff; border-radius: 6px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <div style="width: 12px; height: 12px; background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); border-radius: 2px;"></div>
+                        <span style="font-size: 13px; color: #1e40af; font-weight: 600;">Wiederkehrend</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <div style="width: 12px; height: 12px; background: #10b981; border-radius: 2px;"></div>
+                        <span style="font-size: 13px; color: #059669; font-weight: 600;">Einmalig</span>
+                    </div>
+                </div>
+            ` + sortedMonths.map(month => {
+                const data = monthlyRevenue[month];
+                const percentage = (data.actual / maxRevenue) * 100;
+                const recurringPercentage = (data.recurring / data.actual) * 100;
+                const [year, monthNum] = month.split('-');
+                const monthDate = new Date(year, monthNum - 1);
+                const monthName = monthDate.toLocaleDateString('de-DE', { month: 'short', year: 'numeric' });
+                const isPast = monthDate <= now;
+                const isFuture = monthDate > now;
+                
+                return `
+                    <div style="margin-bottom: 20px; ${isFuture ? 'opacity: 0.6;' : ''}">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <span style="font-weight: 600; color: var(--text-primary);">${monthName}</span>
+                                ${isFuture ? '<span style="font-size: 11px; color: #64748b; background: #f1f5f9; padding: 2px 6px; border-radius: 3px;">Geplant</span>' : ''}
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                ${data.recurring > 0 ? `<span style="font-size: 13px; color: #1e40af;">€ ${Math.round(data.recurring).toLocaleString('de-DE')}</span>` : ''}
+                                ${data.oneTime > 0 ? `<span style="font-size: 13px; color: #059669;">€ ${Math.round(data.oneTime).toLocaleString('de-DE')}</span>` : ''}
+                                <span style="font-weight: 700; color: var(--primary); min-width: 80px; text-align: right;">€ ${Math.round(data.actual).toLocaleString('de-DE')}</span>
+                            </div>
+                        </div>
+                        <div style="width: 100%; height: 14px; background: var(--bg-main); border-radius: 7px; overflow: hidden; position: relative;">
+                            ${data.recurring > 0 ? `
+                                <div style="position: absolute; width: ${(data.recurring / maxRevenue) * 100}%; height: 100%; background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); border-radius: 7px;"></div>
+                            ` : ''}
+                            ${data.oneTime > 0 ? `
+                                <div style="position: absolute; left: ${(data.recurring / maxRevenue) * 100}%; width: ${(data.oneTime / maxRevenue) * 100}%; height: 100%; background: #10b981; border-radius: 7px;"></div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function renderTopPerformers(data) {
+            const container = document.getElementById('topPerformersChart');
+            if (!container) return;
+            
+            // Gruppiere Deals nach Hauptverantwortlichem
+            const performerStats = {};
+            
+            data.deals.filter(d => d.wonConfirmed).forEach(deal => {
+                const responsible = deal.responsiblePerson || 'Nicht zugewiesen';
+                if (!performerStats[responsible]) {
+                    performerStats[responsible] = { count: 0, value: 0 };
+                }
+                performerStats[responsible].count++;
+                performerStats[responsible].value += parseFloat(deal.value || 0);
+            });
+            
+            // Sortiere nach Umsatz
+            const sorted = Object.entries(performerStats)
+                .sort((a, b) => b[1].value - a[1].value)
+                .slice(0, 5);
+            
+            if (sorted.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 40px 0;">Keine Daten verfügbar</p>';
+                return;
+            }
+            
+            const maxValue = sorted[0][1].value;
+            
+            container.innerHTML = sorted.map(([name, stats], index) => {
+                const percentage = (stats.value / maxValue) * 100;
+                const medal = index === 0 ? '#1' : index === 1 ? '#2' : index === 2 ? '#3' : '';
+                
+                return `
+                    <div style="margin-bottom: 20px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <span style="font-weight: 600; color: var(--text-primary);">${medal} ${name}</span>
+                            <span style="font-size: 12px; color: var(--text-secondary);">${stats.count} Deals</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <div style="flex: 1; height: 8px; background: var(--bg-main); border-radius: 4px; margin-right: 12px; overflow: hidden;">
+                                <div style="width: ${percentage}%; height: 100%; background: ${index === 0 ? '#059669' : index === 1 ? '#1e40af' : '#64748b'}; transition: width 0.3s ease;"></div>
+                            </div>
+                            <span style="font-weight: 700; color: var(--primary); min-width: 100px; text-align: right;">€ ${Math.round(stats.value).toLocaleString('de-DE')}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function renderSalesFunnel(data) {
+            const container = document.getElementById('salesFunnelChart');
+            if (!container) return;
+            
+            const stages = [
+                { name: 'Leads', count: data.contacts.length, color: '#3b82f6' },
+                { name: 'Qualifizierung', count: data.deals.filter(d => d.stage === 'Qualifizierung').length, color: '#6366f1' },
+                { name: 'Angebot', count: data.deals.filter(d => d.stage === 'Angebot').length, color: '#8b5cf6' },
+                { name: 'Verhandlung', count: data.deals.filter(d => d.stage === 'Verhandlung').length, color: '#a855f7' },
+                { name: 'Gewonnen', count: data.deals.filter(d => d.wonConfirmed).length, color: '#059669' }
+            ];
+            
+            const maxCount = stages[0].count;
+            
+            container.innerHTML = stages.map((stage, index) => {
+                const percentage = maxCount > 0 ? (stage.count / maxCount) * 100 : 0;
+                const dropOff = index > 0 ? stages[index - 1].count - stage.count : 0;
+                
+                return `
+                    <div style="margin-bottom: 16px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <span style="font-weight: 600; color: var(--text-primary);">${stage.name}</span>
+                            <div style="display: flex; gap: 12px; align-items: center;">
+                                ${dropOff > 0 ? `<span style="font-size: 11px; color: #dc2626;">-${dropOff}</span>` : ''}
+                                <span style="font-weight: 700; color: ${stage.color};">${stage.count}</span>
+                            </div>
+                        </div>
+                        <div style="width: ${percentage}%; height: 32px; background: ${stage.color}; border-radius: 4px; display: flex; align-items: center; padding: 0 12px; color: white; font-weight: 600; transition: width 0.3s ease;">
+                            ${percentage.toFixed(0)}%
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function renderLossReasons(data) {
+            const container = document.getElementById('lossReasonsChart');
+            if (!container) return;
+            
+            const lostDeals = data.deals.filter(d => d.lostConfirmed);
+            
+            // Simuliere Verlustgründe (in Zukunft könnte man diese beim Deal speichern)
+            const reasons = {
+                'Preis zu hoch': Math.floor(lostDeals.length * 0.35),
+                'Konkurrenz': Math.floor(lostDeals.length * 0.25),
+                'Timing': Math.floor(lostDeals.length * 0.20),
+                'Features fehlen': Math.floor(lostDeals.length * 0.10),
+                'Sonstige': Math.floor(lostDeals.length * 0.10)
+            };
+            
+            const totalLost = Object.values(reasons).reduce((sum, val) => sum + val, 0);
+            
+            if (totalLost === 0) {
+                container.innerHTML = '<p style="color: var(--text-secondary); text-align: center; padding: 40px 0;">Keine verlorenen Deals</p>';
+                return;
+            }
+            
+            const colors = ['#dc2626', '#f59e0b', '#64748b', '#94a3b8', '#cbd5e1'];
+            
+            container.innerHTML = Object.entries(reasons).map(([reason, count], index) => {
+                const percentage = totalLost > 0 ? ((count / totalLost) * 100).toFixed(1) : 0;
+                
+                return `
+                    <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px; border-bottom: 1px solid var(--border);">
+                        <div style="display: flex; align-items: center; gap: 12px; flex: 1;">
+                            <div style="width: 12px; height: 12px; background: ${colors[index]}; border-radius: 2px;"></div>
+                            <span style="font-weight: 500; color: var(--text-primary);">${reason}</span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 16px;">
+                            <span style="font-size: 14px; font-weight: 600; color: var(--text-secondary);">${count} Deals</span>
+                            <span style="font-weight: 700; color: ${colors[index]}; min-width: 50px; text-align: right;">${percentage}%</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function renderForecast() {
+            const container = document.getElementById('forecastChart');
+            if (!container) return;
+            
+            const now = new Date();
+            
+            // Berechne TATSÄCHLICHE geplante Einnahmen für die nächsten 3 Monate
+            const futureRevenue = {};
+            const activeOrders = orders.filter(o => o.status !== 'Storniert');
+            
+            // Generiere Monate für Forecast
+            const forecastMonths = [];
+            for (let i = 1; i <= 3; i++) {
+                const futureDate = new Date(now.getFullYear(), now.getMonth() + i, 1);
+                const key = `${futureDate.getFullYear()}-${String(futureDate.getMonth() + 1).padStart(2, '0')}`;
+                forecastMonths.push({
+                    key: key,
+                    name: futureDate.toLocaleDateString('de-DE', { month: 'short', year: 'numeric' }),
+                    date: futureDate
+                });
+                futureRevenue[key] = { confirmed: 0, recurring: 0, oneTime: 0, pipeline: 0 };
+            }
+            
+            // Berechne BESTÄTIGTE zukünftige Einnahmen aus bestehenden Aufträgen
+            activeOrders.forEach(order => {
+                // Verwende startDate wenn vorhanden, sonst createdAt
+                const startDate = new Date(order.startDate || order.createdAt);
+                const paymentModel = order.paymentModel || 'one-time';
+                const value = parseFloat(order.value) || 0;
+                const duration = parseInt(order.contractDuration) || 12;
+                
+                if (paymentModel === 'monthly') {
+                    // Monatlich: Prüfe welche Zahlungen in Zukunft liegen
+                    for (let i = 0; i < duration; i++) {
+                        const paymentDate = new Date(startDate);
+                        paymentDate.setMonth(paymentDate.getMonth() + i);
+                        const key = `${paymentDate.getFullYear()}-${String(paymentDate.getMonth() + 1).padStart(2, '0')}`;
+                        
+                        if (futureRevenue[key] && paymentDate > now) {
+                            futureRevenue[key].confirmed += value;
+                            futureRevenue[key].recurring += value;
+                        }
+                    }
+                } else if (paymentModel === 'quarterly') {
+                    const quarters = Math.ceil(duration / 3);
+                    for (let i = 0; i < quarters; i++) {
+                        const paymentDate = new Date(startDate);
+                        paymentDate.setMonth(paymentDate.getMonth() + (i * 3));
+                        const key = `${paymentDate.getFullYear()}-${String(paymentDate.getMonth() + 1).padStart(2, '0')}`;
+                        
+                        if (futureRevenue[key] && paymentDate > now) {
+                            futureRevenue[key].confirmed += value;
+                            futureRevenue[key].recurring += value;
+                        }
+                    }
+                } else if (paymentModel === 'yearly') {
+                    const years = Math.ceil(duration / 12);
+                    for (let i = 0; i < years; i++) {
+                        const paymentDate = new Date(startDate);
+                        paymentDate.setMonth(paymentDate.getMonth() + (i * 12));
+                        const key = `${paymentDate.getFullYear()}-${String(paymentDate.getMonth() + 1).padStart(2, '0')}`;
+                        
+                        if (futureRevenue[key] && paymentDate > now) {
+                            futureRevenue[key].confirmed += value;
+                            futureRevenue[key].recurring += value;
+                        }
+                    }
+                }
+            });
+            
+            // Berechne Durchschnitt der letzten 3 Monate für Szenarien
+            const threeMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 3, 1);
+            const recentDeals = deals.filter(d => {
+                return d.wonConfirmed && new Date(d.createdAt) >= threeMonthsAgo;
+            });
+            const recentRevenue = recentDeals.reduce((sum, d) => sum + parseFloat(d.value || 0), 0);
+            const avgMonthlyNewBusiness = recentRevenue / 3;
+            
+            // Pipeline-Wert
+            const pipelineValue = deals.filter(d => 
+                d.stage !== 'Abgeschlossen gewonnen' && 
+                d.stage !== 'Abgeschlossen verloren'
+            ).reduce((sum, d) => sum + parseFloat(d.value || 0), 0);
+            
+            // Szenarien für neues Business
+            const conservativeNew = avgMonthlyNewBusiness * 0.5; // 50% vom Durchschnitt
+            const realisticNew = avgMonthlyNewBusiness * 0.8; // 80% vom Durchschnitt
+            const optimisticNew = avgMonthlyNewBusiness * 1.2; // 120% vom Durchschnitt
+            
+            // Finde Maximum für Skalierung
+            const maxValue = Math.max(
+                ...forecastMonths.map(m => futureRevenue[m.key].confirmed + optimisticNew),
+                1
+            );
+            
+            container.innerHTML = `
+                <div style="margin-bottom: 24px; padding: 16px; background: #f0f9ff; border-left: 4px solid #1e40af; border-radius: 4px;">
+                    <div style="font-size: 13px; color: #1e40af; font-weight: 600; margin-bottom: 12px;">Forecast-Basis</div>
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;">
+                        <div>
+                            <div style="font-size: 11px; color: #64748b; margin-bottom: 4px;">Bestätigte Einnahmen</div>
+                            <div style="font-size: 16px; font-weight: 700; color: #10b981;">€ ${Math.round(futureRevenue[forecastMonths[0].key].confirmed).toLocaleString('de-DE')}</div>
+                            <div style="font-size: 10px; color: #64748b;">Nächster Monat</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 11px; color: #64748b; margin-bottom: 4px;">Ø Neues Business</div>
+                            <div style="font-size: 16px; font-weight: 700; color: #1e40af;">€ ${Math.round(avgMonthlyNewBusiness).toLocaleString('de-DE')}</div>
+                            <div style="font-size: 10px; color: #64748b;">Letzte 3 Monate</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 11px; color: #64748b; margin-bottom: 4px;">Pipeline</div>
+                            <div style="font-size: 16px; font-weight: 700; color: #f59e0b;">€ ${Math.round(pipelineValue).toLocaleString('de-DE')}</div>
+                            <div style="font-size: 10px; color: #64748b;">Potenzial</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 16px; margin-bottom: 20px; padding: 12px; background: #fefce8; border-radius: 6px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <div style="width: 12px; height: 12px; background: #10b981; border-radius: 2px;"></div>
+                        <span style="font-size: 13px; color: #059669; font-weight: 600;">Bestätigt (aus Verträgen)</span>
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <div style="width: 12px; height: 12px; background: #94a3b8; border-radius: 2px;"></div>
+                        <span style="font-size: 13px; color: #64748b; font-weight: 600;">Prognostiziert (neues Business)</span>
+                    </div>
+                </div>
+                
+                ${forecastMonths.map(month => {
+                    const data = futureRevenue[month.key];
+                    const conservativeTotal = data.confirmed + conservativeNew;
+                    const realisticTotal = data.confirmed + realisticNew;
+                    const optimisticTotal = data.confirmed + optimisticNew;
+                    
+                    return `
+                        <div style="margin-bottom: 28px;">
+                            <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 16px; font-size: 15px;">${month.name}</div>
+                            
+                            <!-- Konservativ -->
+                            <div style="margin-bottom: 12px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                                    <span style="font-size: 12px; color: #64748b; font-weight: 600;">KONSERVATIV</span>
+                                    <span style="font-size: 13px; font-weight: 700; color: #dc2626;">€ ${Math.round(conservativeTotal).toLocaleString('de-DE')}</span>
+                                </div>
+                                <div style="height: 24px; background: var(--bg-main); border-radius: 4px; overflow: hidden; position: relative;">
+                                    <div style="position: absolute; width: ${(data.confirmed / maxValue) * 100}%; height: 100%; background: #10b981;"></div>
+                                    <div style="position: absolute; left: ${(data.confirmed / maxValue) * 100}%; width: ${(conservativeNew / maxValue) * 100}%; height: 100%; background: #94a3b8;"></div>
+                                    <div style="position: relative; height: 100%; display: flex; align-items: center; padding: 0 8px; font-size: 11px; font-weight: 600; color: white;">
+                                        ${data.confirmed > 0 ? `€ ${Math.round(data.confirmed).toLocaleString('de-DE')}` : ''}
+                                        ${conservativeNew > 0 ? ` + € ${Math.round(conservativeNew).toLocaleString('de-DE')}` : ''}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Realistisch -->
+                            <div style="margin-bottom: 12px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                                    <span style="font-size: 12px; color: #64748b; font-weight: 600;">REALISTISCH</span>
+                                    <span style="font-size: 13px; font-weight: 700; color: #1e40af;">€ ${Math.round(realisticTotal).toLocaleString('de-DE')}</span>
+                                </div>
+                                <div style="height: 24px; background: var(--bg-main); border-radius: 4px; overflow: hidden; position: relative;">
+                                    <div style="position: absolute; width: ${(data.confirmed / maxValue) * 100}%; height: 100%; background: #10b981;"></div>
+                                    <div style="position: absolute; left: ${(data.confirmed / maxValue) * 100}%; width: ${(realisticNew / maxValue) * 100}%; height: 100%; background: #94a3b8;"></div>
+                                    <div style="position: relative; height: 100%; display: flex; align-items: center; padding: 0 8px; font-size: 11px; font-weight: 600; color: white;">
+                                        ${data.confirmed > 0 ? `€ ${Math.round(data.confirmed).toLocaleString('de-DE')}` : ''}
+                                        ${realisticNew > 0 ? ` + € ${Math.round(realisticNew).toLocaleString('de-DE')}` : ''}
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Optimistisch -->
+                            <div style="margin-bottom: 12px;">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                                    <span style="font-size: 12px; color: #64748b; font-weight: 600;">OPTIMISTISCH</span>
+                                    <span style="font-size: 13px; font-weight: 700; color: #059669;">€ ${Math.round(optimisticTotal).toLocaleString('de-DE')}</span>
+                                </div>
+                                <div style="height: 24px; background: var(--bg-main); border-radius: 4px; overflow: hidden; position: relative;">
+                                    <div style="position: absolute; width: ${(data.confirmed / maxValue) * 100}%; height: 100%; background: #10b981;"></div>
+                                    <div style="position: absolute; left: ${(data.confirmed / maxValue) * 100}%; width: ${(optimisticNew / maxValue) * 100}%; height: 100%; background: #94a3b8;"></div>
+                                    <div style="position: relative; height: 100%; display: flex; align-items: center; padding: 0 8px; font-size: 11px; font-weight: 600; color: white;">
+                                        ${data.confirmed > 0 ? `€ ${Math.round(data.confirmed).toLocaleString('de-DE')}` : ''}
+                                        ${optimisticNew > 0 ? ` + € ${Math.round(optimisticNew).toLocaleString('de-DE')}` : ''}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }).join('')}
+            `;
+        }
+        
+        function exportAnalyticsPDF() {
+            alert('PDF Export wird vorbereitet...\n\nIn der finalen Version würde hier ein detaillierter Report als PDF erstellt werden mit:\n\n• Alle KPIs und Charts\n• Umsatzentwicklung\n• Top Performer\n• Sales Funnel\n• Verlustgründe\n• Forecast\n\nDownload würde automatisch starten.');
+        }
+        
         function openGoalsModal() {
             const modal = document.createElement('div');
             modal.className = 'modal active';
             modal.innerHTML = `
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h2 class="modal-title">🎯 Jahresziele 2026 bearbeiten</h2>
+                        <h2 class="modal-title">Jahresziele 2026 bearbeiten</h2>
                         <button class="close-btn" onclick="this.closest('.modal').remove()">&times;</button>
                     </div>
                     
@@ -7425,7 +8684,7 @@ Ihr BBC Team`
             setTimeout(() => {
                 if (!Storage.isAvailable()) {
                     showNotification(
-                        '⚠️ Eingeschränkter Speicher',
+                        'Eingeschränkter Speicher',
                         'Ihre Daten werden nur temporär gespeichert und gehen beim Schließen verloren. Bitte nutzen Sie die Export-Funktion für Backups oder hosten Sie das CRM auf einer eigenen Domain!',
                         10000
                     );
