@@ -40,6 +40,117 @@
             line-height: 1.6;
         }
         
+        /* Login Screen */
+        .login-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            z-index: 999999;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .login-container.active {
+            display: flex;
+        }
+        
+        .login-box {
+            background: white;
+            padding: 48px;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+        }
+        
+        .login-logo {
+            font-size: 56px;
+            font-weight: 900;
+            margin-bottom: 8px;
+        }
+        
+        .login-logo-primary {
+            color: #00BCD4;
+        }
+        
+        .login-logo-secondary {
+            font-size: 42px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: #64748b;
+            margin-bottom: 32px;
+        }
+        
+        .login-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 32px;
+        }
+        
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .login-input {
+            padding: 14px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 15px;
+            font-family: 'IBM Plex Sans', sans-serif;
+            transition: all 0.2s;
+        }
+        
+        .login-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .login-button {
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'IBM Plex Sans', sans-serif;
+        }
+        
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+        }
+        
+        .login-error {
+            color: #dc2626;
+            font-size: 14px;
+            margin-top: 8px;
+            display: none;
+        }
+        
+        .login-error.show {
+            display: block;
+        }
+        
+        .crm-container {
+            display: none;
+        }
+        
+        .crm-container.unlocked {
+            display: block;
+        }
+        
         .container {
             display: flex;
             min-height: 100vh;
@@ -1402,6 +1513,39 @@
     </script>
 </head>
 <body>
+    <!-- Login Screen -->
+    <div class="login-container active" id="loginScreen">
+        <div class="login-box">
+            <div class="login-logo">
+                <span class="login-logo-primary">BBC</span>
+            </div>
+            <div class="login-logo-secondary">CRM</div>
+            <h2 class="login-title">Willkommen zurück</h2>
+            <form class="login-form" id="loginForm" onsubmit="handleLogin(event)">
+                <input 
+                    type="text" 
+                    id="loginUsername" 
+                    class="login-input" 
+                    placeholder="Benutzername" 
+                    required 
+                    autocomplete="username"
+                >
+                <input 
+                    type="password" 
+                    id="loginPassword" 
+                    class="login-input" 
+                    placeholder="Passwort" 
+                    required 
+                    autocomplete="current-password"
+                >
+                <button type="submit" class="login-button">Anmelden</button>
+                <div class="login-error" id="loginError">Falscher Benutzername oder Passwort</div>
+            </form>
+        </div>
+    </div>
+
+    <!-- CRM Application (hidden until login) -->
+    <div class="crm-container" id="crmApp">
     <div class="container">
         <!-- Sidebar -->
         <div class="sidebar">
@@ -1468,6 +1612,12 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                     </svg>
                     <span>Einstellungen</span>
+                </div>
+                <div class="nav-item" onclick="logout()" style="margin-top: auto; border-top: 1px solid #e2e8f0; padding-top: 16px; cursor: pointer;">
+                    <svg class="nav-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                    </svg>
+                    <span>Abmelden</span>
                 </div>
             </nav>
         </div>
@@ -10589,6 +10739,94 @@ Ihr BBC Team`
             checkOverdueTasks();
             setInterval(checkOverdueTasks, 300000); // Check every 5 minutes
         });
+        
+        // ==========================================
+        // LOGIN SYSTEM
+        // ==========================================
+        
+        // Login-Credentials (SHA-256 gehashed)
+        // Standard: admin / admin123
+        const CREDENTIALS = {
+            // Format: username: sha256(password)
+            'admin': '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9' // admin123
+        };
+        
+        // SHA-256 Hash Funktion
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            return hashHex;
+        }
+        
+        // Check if already logged in
+        function checkLoginStatus() {
+            const isLoggedIn = sessionStorage.getItem('bbc_crm_logged_in') === 'true';
+            if (isLoggedIn) {
+                unlockCRM();
+            }
+        }
+        
+        // Handle Login
+        async function handleLogin(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const errorDiv = document.getElementById('loginError');
+            
+            // Hash password
+            const hashedPassword = await sha256(password);
+            
+            // Check credentials
+            if (CREDENTIALS[username] && CREDENTIALS[username] === hashedPassword) {
+                // Login successful
+                sessionStorage.setItem('bbc_crm_logged_in', 'true');
+                sessionStorage.setItem('bbc_crm_user', username);
+                unlockCRM();
+            } else {
+                // Login failed
+                errorDiv.classList.add('show');
+                document.getElementById('loginPassword').value = '';
+                document.getElementById('loginPassword').focus();
+                
+                // Hide error after 3 seconds
+                setTimeout(() => {
+                    errorDiv.classList.remove('show');
+                }, 3000);
+            }
+        }
+        
+        // Unlock CRM
+        function unlockCRM() {
+            document.getElementById('loginScreen').classList.remove('active');
+            document.getElementById('crmApp').classList.add('unlocked');
+            
+            // Clear login form
+            document.getElementById('loginUsername').value = '';
+            document.getElementById('loginPassword').value = '';
+        }
+        
+        // Logout function
+        window.logout = function() {
+            if (confirm('Möchten Sie sich wirklich abmelden?')) {
+                sessionStorage.removeItem('bbc_crm_logged_in');
+                sessionStorage.removeItem('bbc_crm_user');
+                location.reload();
+            }
+        };
+        
+        // Check login status on load
+        checkLoginStatus();
+        
+        // Prevent back button after logout
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted) {
+                checkLoginStatus();
+            }
+        });
     </script>
+    </div> <!-- End crm-container -->
 </body>
 </html>
