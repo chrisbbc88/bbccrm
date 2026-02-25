@@ -10744,11 +10744,14 @@ Ihr BBC Team`
         // LOGIN SYSTEM
         // ==========================================
         
-        // Login-Credentials (SHA-256 gehashed)
-        // Standard: admin / admin123
-        const CREDENTIALS = {
-            // Format: username: sha256(password)
-            'admin': '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9' // admin123
+        // ==========================================
+        // EINFACHES LOGIN-SYSTEM
+        // ==========================================
+        
+        // Standard Login-Daten (können geändert werden)
+        const LOGIN_CREDENTIALS = {
+            username: 'admin',
+            passwordHash: '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9' // admin123
         };
         
         // SHA-256 Hash Funktion
@@ -10780,7 +10783,7 @@ Ihr BBC Team`
             const hashedPassword = await sha256(password);
             
             // Check credentials
-            if (CREDENTIALS[username] && CREDENTIALS[username] === hashedPassword) {
+            if (username === LOGIN_CREDENTIALS.username && hashedPassword === LOGIN_CREDENTIALS.passwordHash) {
                 // Login successful
                 sessionStorage.setItem('bbc_crm_logged_in', 'true');
                 sessionStorage.setItem('bbc_crm_user', username);
