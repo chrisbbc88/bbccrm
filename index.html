@@ -4822,7 +4822,7 @@ Ihr BBC Team`
                 
                 if (companyName) {
                     const newCompany = {
-                        id: Date.now().toString(),
+                        id: Date.now().toString() + '_' + Math.random().toString(36).substr(2, 9),
                         name: companyName,
                         industry: industry,
                         createdAt: new Date().toISOString(),
@@ -4864,7 +4864,7 @@ Ihr BBC Team`
             console.log('Final company ID:', finalCompanyId);
             
             const contact = {
-                id: contactId || Date.now().toString(),
+                id: contactId || (Date.now().toString() + '_' + Math.random().toString(36).substr(2, 9)),
                 firstName: firstName,
                 lastName: lastName,
                 name: name,
@@ -6494,7 +6494,7 @@ Ihr BBC Team`
             const score = document.querySelectorAll('#dealScore .star.active').length;
             
             const deal = {
-                id: Date.now().toString(),
+                id: Date.now().toString() + '_' + Math.random().toString(36).substr(2, 9),
                 companyId,
                 name,
                 value: parseFloat(value),
@@ -6827,7 +6827,7 @@ Ihr BBC Team`
             const company = companies.find(c => c.id === deal.companyId);
             
             const order = {
-                id: Date.now().toString(),
+                id: Date.now().toString() + '_' + Math.random().toString(36).substr(2, 9),
                 orderNumber: 'AU-' + new Date().getFullYear() + '-' + (orders.length + 1).toString().padStart(4, '0'),
                 dealId: deal.id,
                 dealName: deal.name,
@@ -7042,7 +7042,7 @@ Ihr BBC Team`
             } else {
                 // Neu erstellen
                 const task = {
-                    id: Date.now().toString(),
+                    id: Date.now().toString() + '_' + Math.random().toString(36).substr(2, 9),
                     title,
                     description,
                     dueDate,
