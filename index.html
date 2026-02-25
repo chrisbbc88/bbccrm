@@ -1219,6 +1219,62 @@
             color: var(--text-secondary);
             margin-top: 8px;
         }
+        
+        /* Toggle Switch für OneDrive */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
+        }
+        
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #cbd5e1;
+            transition: .4s;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+        }
+        
+        input:checked + .slider {
+            background-color: #10b981;
+        }
+        
+        input:focus + .slider {
+            box-shadow: 0 0 1px #10b981;
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(24px);
+        }
+        
+        .slider.round {
+            border-radius: 26px;
+        }
+        
+        .slider.round:before {
+            border-radius: 50%;
+        }
     </style>
     
     <!-- Speech Recognition System -->
@@ -1849,6 +1905,7 @@
                     <button class="settings-tab" data-tab="services" onclick="switchSettingsTab('services')">Leistungen</button>
                     <button class="settings-tab" data-tab="stages" onclick="switchSettingsTab('stages')">Deal-Phasen</button>
                     <button class="settings-tab" data-tab="statuses" onclick="switchSettingsTab('statuses')">Lead-Status</button>
+                    <button class="settings-tab" data-tab="onedrive" onclick="switchSettingsTab('onedrive')">☁️ OneDrive Sync</button>
                     <button class="settings-tab" data-tab="general" onclick="switchSettingsTab('general')">Allgemein</button>
                     <button class="settings-tab" data-tab="backup" onclick="switchSettingsTab('backup')">Datensicherung</button>
                 </div>
@@ -1949,6 +2006,101 @@
                             <input type="number" class="form-input" id="reminderDays" value="1" min="0" max="30">
                         </div>
                         <button class="btn btn-primary" onclick="saveGeneralSettings()">Speichern</button>
+                    </div>
+                </div>
+
+                <!-- OneDrive Sync Tab -->
+                <div id="settings-onedrive" class="settings-tab-content hidden">
+                    <div style="margin-bottom: 24px;">
+                        <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 8px;">☁️ OneDrive Synchronisation</h2>
+                        <p style="color: var(--text-secondary);">Synchronisieren Sie Ihre CRM-Daten automatisch mit Microsoft OneDrive</p>
+                    </div>
+
+                    <!-- Status Card -->
+                    <div id="onedrive-status-card" style="background: white; padding: 24px; border-radius: 12px; margin-bottom: 16px; border-left: 4px solid #64748b;">
+                        <div style="display: flex; justify-content: space-between; align-items: start;">
+                            <div>
+                                <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 8px;">
+                                    <span id="onedrive-status-icon">⚪</span> Status: 
+                                    <span id="onedrive-status-text">Nicht verbunden</span>
+                                </h3>
+                                <p id="onedrive-status-detail" style="color: var(--text-secondary); font-size: 14px;">
+                                    Verbinden Sie OneDrive für automatische Backups
+                                </p>
+                            </div>
+                            <button id="onedrive-disconnect-btn" class="btn btn-secondary" onclick="disconnectOneDrive()" style="display: none;">
+                                Trennen
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Setup Section -->
+                    <div id="onedrive-setup" style="background: white; padding: 24px; border-radius: 12px; margin-bottom: 16px;">
+                        <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px;">🔧 Einrichtung</h3>
+                        
+                        <div style="background: #e0f2fe; padding: 16px; border-radius: 8px; margin-bottom: 20px;">
+                            <div style="font-weight: 600; color: #0369a1; margin-bottom: 8px;">📋 Schritt-für-Schritt Anleitung:</div>
+                            <ol style="color: #0c4a6e; font-size: 14px; margin: 0; padding-left: 20px;">
+                                <li style="margin-bottom: 8px;">Registrieren Sie eine App bei Microsoft Azure Portal</li>
+                                <li style="margin-bottom: 8px;">Gehen Sie zu: <a href="https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationsListBlade" target="_blank" style="color: #0369a1; text-decoration: underline;">Azure App Registrierung</a></li>
+                                <li style="margin-bottom: 8px;">Klicken Sie auf "Neue Registrierung"</li>
+                                <li style="margin-bottom: 8px;">Name: "BBC CRM" (oder beliebig)</li>
+                                <li style="margin-bottom: 8px;">Unterstützte Kontotypen: "Konten in einem beliebigen Organisationsverzeichnis"</li>
+                                <li style="margin-bottom: 8px;">Umleitungs-URI: <code style="background: white; padding: 2px 6px; border-radius: 4px;">${window.location.origin + window.location.pathname}</code></li>
+                                <li style="margin-bottom: 8px;">Kopieren Sie die <strong>Anwendungs-ID (Client-ID)</strong></li>
+                                <li>Fügen Sie die ID unten ein</li>
+                            </ol>
+                        </div>
+
+                        <div style="margin-bottom: 16px;">
+                            <label style="display: block; font-weight: 600; margin-bottom: 8px;">Microsoft Client ID:</label>
+                            <input type="text" id="onedrive-client-id" placeholder="z.B. 12345678-1234-1234-1234-123456789012" 
+                                   style="width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-family: monospace; font-size: 14px;">
+                            <small style="color: var(--text-secondary); display: block; margin-top: 6px;">
+                                Diese ID erhalten Sie nach der App-Registrierung in Azure
+                            </small>
+                        </div>
+
+                        <button class="btn btn-primary" onclick="connectOneDrive()">
+                            🔗 Mit OneDrive verbinden
+                        </button>
+                    </div>
+
+                    <!-- Sync Controls (nur wenn verbunden) -->
+                    <div id="onedrive-controls" style="display: none;">
+                        <div style="background: white; padding: 24px; border-radius: 12px; margin-bottom: 16px;">
+                            <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px;">⚙️ Synchronisations-Einstellungen</h3>
+                            
+                            <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px; background: #f8fafc; border-radius: 8px; margin-bottom: 16px;">
+                                <div>
+                                    <div style="font-weight: 600; margin-bottom: 4px;">Automatische Synchronisation</div>
+                                    <div style="font-size: 14px; color: var(--text-secondary);">Synchronisiert alle 5 Minuten automatisch</div>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="onedrive-auto-sync" onchange="toggleAutoSync(this.checked)">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                                <button class="btn btn-primary" onclick="manualSyncToCloud()">
+                                    ☁️ Jetzt hochladen
+                                </button>
+                                <button class="btn btn-secondary" onclick="manualSyncFromCloud()">
+                                    ⬇️ Jetzt herunterladen
+                                </button>
+                            </div>
+                        </div>
+
+                        <div style="background: #fef3c7; padding: 16px; border-radius: 8px; border-left: 4px solid #f59e0b;">
+                            <div style="display: flex; align-items: start; gap: 12px;">
+                                <div style="font-size: 20px;">💡</div>
+                                <div style="font-size: 14px; color: #78350f;">
+                                    <div style="font-weight: 600; margin-bottom: 4px;">Hinweis:</div>
+                                    <div>Ihre Daten werden als "bbc-crm-data.json" im OneDrive-Root gespeichert. Die Synchronisation läuft im Hintergrund und stört nicht Ihre Arbeit.</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -3016,6 +3168,322 @@
     </div>
 
     <script>
+        // ==========================================
+        // ONEDRIVE SYNC SYSTEM
+        // ==========================================
+        
+        const OneDriveSync = {
+            clientId: null, // Wird vom User in Einstellungen eingegeben
+            accessToken: null,
+            refreshToken: null,
+            syncEnabled: false,
+            lastSync: null,
+            syncInterval: null,
+            
+            // Microsoft Graph API Endpoints
+            authEndpoint: 'https://login.microsoftonline.com/common/oauth2/v2.0/authorize',
+            tokenEndpoint: 'https://login.microsoftonline.com/common/oauth2/v2.0/token',
+            graphEndpoint: 'https://graph.microsoft.com/v1.0',
+            
+            // Initialisierung
+            init: function() {
+                const savedConfig = localStorage.getItem('onedrive_config');
+                if (savedConfig) {
+                    const config = JSON.parse(savedConfig);
+                    this.clientId = config.clientId;
+                    this.accessToken = config.accessToken;
+                    this.refreshToken = config.refreshToken;
+                    this.syncEnabled = config.syncEnabled || false;
+                    this.lastSync = config.lastSync;
+                    
+                    if (this.syncEnabled && this.accessToken) {
+                        console.log('[OneDrive] Auto-Sync aktiviert');
+                        this.startAutoSync();
+                    }
+                }
+            },
+            
+            // OneDrive Authentifizierung starten
+            authenticate: function(clientId) {
+                this.clientId = clientId;
+                const redirectUri = window.location.origin + window.location.pathname;
+                const scope = 'Files.ReadWrite offline_access';
+                
+                const authUrl = `${this.authEndpoint}?client_id=${clientId}&response_type=code&redirect_uri=${encodeURIComponent(redirectUri)}&scope=${encodeURIComponent(scope)}&response_mode=query`;
+                
+                console.log('[OneDrive] Öffne Authentifizierung...');
+                window.location.href = authUrl;
+            },
+            
+            // Auth Code verarbeiten (nach Redirect)
+            handleAuthCallback: function() {
+                const urlParams = new URLSearchParams(window.location.search);
+                const code = urlParams.get('code');
+                
+                if (code) {
+                    console.log('[OneDrive] Auth Code erhalten, hole Token...');
+                    this.exchangeCodeForToken(code);
+                    // URL bereinigen
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }
+            },
+            
+            // Token austauschen
+            exchangeCodeForToken: async function(code) {
+                const redirectUri = window.location.origin + window.location.pathname;
+                
+                try {
+                    const response = await fetch(this.tokenEndpoint, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: new URLSearchParams({
+                            client_id: this.clientId,
+                            code: code,
+                            redirect_uri: redirectUri,
+                            grant_type: 'authorization_code',
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.access_token) {
+                        this.accessToken = data.access_token;
+                        this.refreshToken = data.refresh_token;
+                        this.saveConfig();
+                        
+                        console.log('[OneDrive] ✅ Authentifizierung erfolgreich!');
+                        alert('✅ OneDrive erfolgreich verbunden!');
+                        
+                        // Erste Synchronisation
+                        this.syncToCloud();
+                    } else {
+                        throw new Error('Kein Access Token erhalten');
+                    }
+                } catch (error) {
+                    console.error('[OneDrive] Token-Fehler:', error);
+                    alert('❌ OneDrive Authentifizierung fehlgeschlagen: ' + error.message);
+                }
+            },
+            
+            // Daten in OneDrive speichern
+            syncToCloud: async function() {
+                if (!this.accessToken) {
+                    console.warn('[OneDrive] Nicht authentifiziert');
+                    return false;
+                }
+                
+                try {
+                    console.log('[OneDrive] Starte Sync...');
+                    
+                    // Alle CRM Daten sammeln
+                    const crmData = {
+                        contacts: JSON.parse(localStorage.getItem('bbc_contacts') || '[]'),
+                        companies: JSON.parse(localStorage.getItem('bbc_companies') || '[]'),
+                        deals: JSON.parse(localStorage.getItem('bbc_deals') || '[]'),
+                        orders: JSON.parse(localStorage.getItem('bbc_orders') || '[]'),
+                        tasks: JSON.parse(localStorage.getItem('bbc_tasks') || '[]'),
+                        employees: JSON.parse(localStorage.getItem('bbc_employees') || '[]'),
+                        emailTemplates: JSON.parse(localStorage.getItem('bbc_email_templates') || '[]'),
+                        reminders: JSON.parse(localStorage.getItem('bbc_reminders') || '[]'),
+                        customServices: JSON.parse(localStorage.getItem('bbc_custom_services') || '[]'),
+                        availableTags: JSON.parse(localStorage.getItem('bbc_available_tags') || '[]'),
+                        dashboardGoals: JSON.parse(localStorage.getItem('bbc_dashboard_goals') || '{}'),
+                        lastSync: new Date().toISOString(),
+                        version: '1.0'
+                    };
+                    
+                    // In OneDrive speichern
+                    const fileName = 'bbc-crm-data.json';
+                    const content = JSON.stringify(crmData, null, 2);
+                    
+                    // Upload zu OneDrive
+                    const uploadUrl = `${this.graphEndpoint}/me/drive/root:/${fileName}:/content`;
+                    
+                    const response = await fetch(uploadUrl, {
+                        method: 'PUT',
+                        headers: {
+                            'Authorization': `Bearer ${this.accessToken}`,
+                            'Content-Type': 'application/json',
+                        },
+                        body: content
+                    });
+                    
+                    if (response.ok) {
+                        this.lastSync = new Date().toISOString();
+                        this.saveConfig();
+                        console.log('[OneDrive] ✅ Sync erfolgreich!');
+                        return true;
+                    } else {
+                        const error = await response.json();
+                        throw new Error(error.error?.message || 'Upload fehlgeschlagen');
+                    }
+                    
+                } catch (error) {
+                    console.error('[OneDrive] Sync-Fehler:', error);
+                    
+                    // Token abgelaufen? Versuche Refresh
+                    if (error.message.includes('401') && this.refreshToken) {
+                        console.log('[OneDrive] Token abgelaufen, refreshe...');
+                        await this.refreshAccessToken();
+                        return this.syncToCloud(); // Retry
+                    }
+                    
+                    return false;
+                }
+            },
+            
+            // Daten von OneDrive laden
+            syncFromCloud: async function() {
+                if (!this.accessToken) {
+                    console.warn('[OneDrive] Nicht authentifiziert');
+                    return false;
+                }
+                
+                try {
+                    console.log('[OneDrive] Lade Daten...');
+                    
+                    const fileName = 'bbc-crm-data.json';
+                    const downloadUrl = `${this.graphEndpoint}/me/drive/root:/${fileName}:/content`;
+                    
+                    const response = await fetch(downloadUrl, {
+                        headers: {
+                            'Authorization': `Bearer ${this.accessToken}`,
+                        }
+                    });
+                    
+                    if (response.ok) {
+                        const crmData = await response.json();
+                        
+                        // Daten in localStorage schreiben
+                        localStorage.setItem('bbc_contacts', JSON.stringify(crmData.contacts || []));
+                        localStorage.setItem('bbc_companies', JSON.stringify(crmData.companies || []));
+                        localStorage.setItem('bbc_deals', JSON.stringify(crmData.deals || []));
+                        localStorage.setItem('bbc_orders', JSON.stringify(crmData.orders || []));
+                        localStorage.setItem('bbc_tasks', JSON.stringify(crmData.tasks || []));
+                        localStorage.setItem('bbc_employees', JSON.stringify(crmData.employees || []));
+                        localStorage.setItem('bbc_email_templates', JSON.stringify(crmData.emailTemplates || []));
+                        localStorage.setItem('bbc_reminders', JSON.stringify(crmData.reminders || []));
+                        localStorage.setItem('bbc_custom_services', JSON.stringify(crmData.customServices || []));
+                        localStorage.setItem('bbc_available_tags', JSON.stringify(crmData.availableTags || []));
+                        localStorage.setItem('bbc_dashboard_goals', JSON.stringify(crmData.dashboardGoals || {}));
+                        
+                        console.log('[OneDrive] ✅ Daten geladen!');
+                        
+                        // Seite neu laden um Daten anzuzeigen
+                        location.reload();
+                        return true;
+                    } else if (response.status === 404) {
+                        console.log('[OneDrive] Keine Cloud-Daten gefunden');
+                        return false;
+                    } else {
+                        throw new Error('Download fehlgeschlagen');
+                    }
+                    
+                } catch (error) {
+                    console.error('[OneDrive] Load-Fehler:', error);
+                    
+                    if (error.message.includes('401') && this.refreshToken) {
+                        await this.refreshAccessToken();
+                        return this.syncFromCloud();
+                    }
+                    
+                    return false;
+                }
+            },
+            
+            // Access Token erneuern
+            refreshAccessToken: async function() {
+                if (!this.refreshToken) return false;
+                
+                try {
+                    const response = await fetch(this.tokenEndpoint, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: new URLSearchParams({
+                            client_id: this.clientId,
+                            refresh_token: this.refreshToken,
+                            grant_type: 'refresh_token',
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (data.access_token) {
+                        this.accessToken = data.access_token;
+                        if (data.refresh_token) {
+                            this.refreshToken = data.refresh_token;
+                        }
+                        this.saveConfig();
+                        console.log('[OneDrive] Token erneuert');
+                        return true;
+                    }
+                    return false;
+                } catch (error) {
+                    console.error('[OneDrive] Token Refresh fehlgeschlagen:', error);
+                    return false;
+                }
+            },
+            
+            // Auto-Sync starten (alle 5 Minuten)
+            startAutoSync: function() {
+                if (this.syncInterval) {
+                    clearInterval(this.syncInterval);
+                }
+                
+                // Sofort synchronisieren
+                this.syncToCloud();
+                
+                // Dann alle 5 Minuten
+                this.syncInterval = setInterval(() => {
+                    console.log('[OneDrive] Auto-Sync...');
+                    this.syncToCloud();
+                }, 5 * 60 * 1000); // 5 Minuten
+                
+                console.log('[OneDrive] Auto-Sync gestartet (alle 5 Min)');
+            },
+            
+            // Auto-Sync stoppen
+            stopAutoSync: function() {
+                if (this.syncInterval) {
+                    clearInterval(this.syncInterval);
+                    this.syncInterval = null;
+                    console.log('[OneDrive] Auto-Sync gestoppt');
+                }
+            },
+            
+            // Konfiguration speichern
+            saveConfig: function() {
+                const config = {
+                    clientId: this.clientId,
+                    accessToken: this.accessToken,
+                    refreshToken: this.refreshToken,
+                    syncEnabled: this.syncEnabled,
+                    lastSync: this.lastSync
+                };
+                localStorage.setItem('onedrive_config', JSON.stringify(config));
+            },
+            
+            // Verbindung trennen
+            disconnect: function() {
+                this.stopAutoSync();
+                this.clientId = null;
+                this.accessToken = null;
+                this.refreshToken = null;
+                this.syncEnabled = false;
+                this.lastSync = null;
+                localStorage.removeItem('onedrive_config');
+                console.log('[OneDrive] Verbindung getrennt');
+            }
+        };
+        
+        // Bei Seitenladung initialisieren
+        OneDriveSync.init();
+        OneDriveSync.handleAuthCallback();
+        
         // Data Storage
         // ==========================================
         // STORAGE SYSTEM (funktioniert auch auf GitHub Pages)
@@ -7218,6 +7686,7 @@ Ihr BBC Team`
                 case 'stages': renderDealStagesList(); break;
                 case 'statuses': renderLeadStatusesList(); break;
                 case 'general': loadGeneralSettings(); break;
+                case 'onedrive': updateOneDriveUI(); break;
             }
         }
 
@@ -7507,6 +7976,123 @@ Ihr BBC Team`
                 alert('Alle Daten wurden gelöscht.');
                 location.reload();
             }
+        }
+        
+        // ==========================================
+        // ONEDRIVE SYNC UI FUNKTIONEN
+        // ==========================================
+        
+        function updateOneDriveUI() {
+            const isConnected = OneDriveSync.accessToken !== null;
+            const statusCard = document.getElementById('onedrive-status-card');
+            const setupSection = document.getElementById('onedrive-setup');
+            const controlsSection = document.getElementById('onedrive-controls');
+            const disconnectBtn = document.getElementById('onedrive-disconnect-btn');
+            
+            if (isConnected) {
+                // Verbunden
+                statusCard.style.borderLeftColor = '#10b981';
+                document.getElementById('onedrive-status-icon').textContent = '✅';
+                document.getElementById('onedrive-status-text').textContent = 'Verbunden';
+                
+                const lastSyncText = OneDriveSync.lastSync ? 
+                    'Letzte Synchronisation: ' + new Date(OneDriveSync.lastSync).toLocaleString('de-DE') :
+                    'Noch keine Synchronisation durchgeführt';
+                document.getElementById('onedrive-status-detail').textContent = lastSyncText;
+                
+                setupSection.style.display = 'none';
+                controlsSection.style.display = 'block';
+                disconnectBtn.style.display = 'block';
+                
+                // Auto-Sync Checkbox Status
+                document.getElementById('onedrive-auto-sync').checked = OneDriveSync.syncEnabled;
+            } else {
+                // Nicht verbunden
+                statusCard.style.borderLeftColor = '#64748b';
+                document.getElementById('onedrive-status-icon').textContent = '⚪';
+                document.getElementById('onedrive-status-text').textContent = 'Nicht verbunden';
+                document.getElementById('onedrive-status-detail').textContent = 'Verbinden Sie OneDrive für automatische Backups';
+                
+                setupSection.style.display = 'block';
+                controlsSection.style.display = 'none';
+                disconnectBtn.style.display = 'none';
+            }
+        }
+        
+        function connectOneDrive() {
+            const clientId = document.getElementById('onedrive-client-id').value.trim();
+            
+            if (!clientId) {
+                alert('Bitte geben Sie eine Client ID ein');
+                return;
+            }
+            
+            // Client ID Validierung (grobe Prüfung)
+            if (clientId.length < 30) {
+                alert('Die Client ID scheint ungültig zu sein. Sie sollte eine längere ID sein (GUID-Format).');
+                return;
+            }
+            
+            console.log('[OneDrive] Starte Authentifizierung mit Client ID:', clientId);
+            OneDriveSync.authenticate(clientId);
+        }
+        
+        function disconnectOneDrive() {
+            if (confirm('Möchten Sie die OneDrive-Verbindung wirklich trennen?\n\nIhre lokalen Daten bleiben erhalten.')) {
+                OneDriveSync.disconnect();
+                updateOneDriveUI();
+                alert('OneDrive-Verbindung getrennt');
+            }
+        }
+        
+        function toggleAutoSync(enabled) {
+            OneDriveSync.syncEnabled = enabled;
+            OneDriveSync.saveConfig();
+            
+            if (enabled) {
+                OneDriveSync.startAutoSync();
+                showNotification('Auto-Sync aktiviert', 'Daten werden alle 5 Minuten automatisch synchronisiert');
+            } else {
+                OneDriveSync.stopAutoSync();
+                showNotification('Auto-Sync deaktiviert', 'Nur manuelle Synchronisation möglich');
+            }
+        }
+        
+        async function manualSyncToCloud() {
+            const btn = event.target;
+            btn.disabled = true;
+            btn.textContent = '⏳ Wird hochgeladen...';
+            
+            const success = await OneDriveSync.syncToCloud();
+            
+            if (success) {
+                showNotification('Sync erfolgreich', 'Alle Daten wurden in OneDrive gesichert');
+                updateOneDriveUI();
+            } else {
+                alert('❌ Sync fehlgeschlagen. Bitte prüfen Sie die Verbindung.');
+            }
+            
+            btn.disabled = false;
+            btn.textContent = '☁️ Jetzt hochladen';
+        }
+        
+        async function manualSyncFromCloud() {
+            if (!confirm('Möchten Sie die Daten aus OneDrive laden?\n\nAchtung: Lokale Änderungen werden überschrieben!')) {
+                return;
+            }
+            
+            const btn = event.target;
+            btn.disabled = true;
+            btn.textContent = '⏳ Wird heruntergeladen...';
+            
+            const success = await OneDriveSync.syncFromCloud();
+            
+            if (!success) {
+                alert('❌ Download fehlgeschlagen. Bitte prüfen Sie die Verbindung.');
+                btn.disabled = false;
+                btn.textContent = '⬇️ Jetzt herunterladen';
+            }
+            // Bei Erfolg wird Seite automatisch neu geladen
         }
         
         // ==========================================
@@ -8147,7 +8733,7 @@ Ihr BBC Team`
                         <div id="editOrderServicesPreview" style="min-height: 50px; padding: 12px; background: #f1f5f9; border-radius: 8px; margin-bottom: 12px;">
                             ${servicesHtml}
                         </div>
-                        <button type="button" onclick="openOrderServicesSelector('${orderId}')" style="padding: 10px 20px; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-family: 'DM Sans', sans-serif;">
+                        <button type="button" onclick="openOrderServicesSelector('` + orderId + `')" style="padding: 10px 20px; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; font-family: 'DM Sans', sans-serif;">
                             Leistungen auswählen
                         </button>
                     </div>
@@ -8187,7 +8773,7 @@ Ihr BBC Team`
                     </div>
                     
                     <div style="display: flex; gap: 12px;">
-                        <button onclick="saveEditedOrder('${orderId}')" style="flex: 1; padding: 14px; font-size: 16px; font-weight: 600; background: #10b981; color: white; border: none; border-radius: 8px; cursor: pointer; font-family: 'DM Sans', sans-serif;">
+                        <button onclick="saveEditedOrder('` + orderId + `')" style="flex: 1; padding: 14px; font-size: 16px; font-weight: 600; background: #10b981; color: white; border: none; border-radius: 8px; cursor: pointer; font-family: 'DM Sans', sans-serif;">
                             💾 Speichern
                         </button>
                         <button onclick="document.getElementById('editOrderModal').remove()" style="flex: 1; padding: 14px; font-size: 16px; font-weight: 600; background: #64748b; color: white; border: none; border-radius: 8px; cursor: pointer; font-family: 'DM Sans', sans-serif;">
@@ -8411,6 +8997,8 @@ Ihr BBC Team`
                 updateAnalytics();
             }
         }
+        
+        // Globale Funktion zum Löschen von Aufträgen
         
         // ==========================================
         // DASHBOARD FUNKTIONEN
